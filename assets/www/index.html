@@ -36,24 +36,30 @@
         <a href="#" class="btn large" onclick="beep();">Beep</a>
         <a href="camera.html" class="btn large">相机</a>
         <a href="#" class="btn large" onclick="show_pic();">Get a Picture</a>
+        <a href="#" class="btn large" onclick="get_contacts();">get_contacts</a>
         <a href="jquery.html" class="btn large">jquery mobile</a>
         <a href="test/iscroll/index.html" class="btn large">iscroll</a>
         <a href="test/backbone/backbone.html" class="btn large">backbone</a>
-        <script type="text/javascript" src="cordova-2.5.0.js"></script>
+        <a href="test/db.html" class="btn large">web sql</a>
+
+        <div id="viewport"></div>
+        <img id="test_img" src="" />
+        <div id="h"></div>
+        <ul>
+            <li id="platform"></li>
+            <li id="version"></li>
+            <li id="uuid"></li>
+            <li id="name"></li>
+            <li id="width"></li>
+            <li id="height"></li>
+            <li id="colorDepth"></li>
+        </ul>
+        <script type="text/javascript" src="js/lib/phonegap/cordova-2.5.0.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-mobile/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
-        
+            // 应用初始化
             app.initialize();
-            
-            var beep = function() {
-			    navigator.notification.beep(2);
-			};
-			
-			function show_pic() {
-			    navigator.camera.getPicture(dump_pic, fail, {
-			        quality : 50
-			    });
-			}
         </script>
     </body>
 </html>

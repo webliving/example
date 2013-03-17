@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>websql Example</title>
+    <script type="text/javascript" charset="utf-8" src="../js/lib/phonegap/cordova-2.5.0.js"></script>
+
+</head>
+<body>
+<h1>Example</h1>
+<p>Open Database</p>
+<div id="status" name="status">Status Message</div>
+<script type="text/javascript">
+    var db = openDatabase('mydb', '1.0', 'Test DB', 3 * 1024);
+    var msg;
+    db.transaction(function (tx) {
+                // 如果没有 LOGS 表, 则创建LOGS
+        tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+        tx.executeSql('INSERT INTO LOGS (id, log) VALUES (1, "foobar")');
+        tx.executeSql('INSERT INTO LOGS (id, log) VALUES (2, "logmsg")');
+        msg = '<p>Log message created and row inserted.</p>';
+        document.querySelector('#status').innerHTML =   msg;
+    },
+    function(err){
+        console.log(err.code);
+    });
+
+    db.transaction(function (tx) {
+        tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) {
+            var len = results.rows.length, i;
+            msg = "<p>Found rows: " + len + "</p>";
+            document.querySelector('#status').innerHTML +=   msg;
+            for (i = 0; i < len; i++){
+                msg = "<p><b>" + results.rows.item(i).log + "</b></p>";
+                document.querySelector('#status').innerHTML +=   msg;
+            }
+        }, null);
+    });
+
+    // 查询语句
+    function queryDB(tx) {
+        tx.executeSql('SELECT * FROM LOGS', [], querySuccess, errorCB);
+    }
+
+    function querySuccess(tx, results) {
+        // 因为没有插入记录，所以返回值为空
+//        console.log("Insert ID = " + results.insertId);
+        // 因为这是一条查询语句所以返回值为0
+        console.log("Rows Affected = " + results.rowAffected);
+        // 返回查询到的记录行数量
+        console.log("Insert ID = " + results.rows.length);
+    }
+
+    function errorCB(err) {
+        alert("Error processing SQL: "+err.code);
+    }
+    // 查询表
+    db.transaction(queryDB, errorCB);
+
+
+    // 删除表
+    db.transaction(function(tx){
+        tx.executeSql('DROP TABLE LOGOS',[]);
+    })
+
+</script>
+</body>
+</html>
