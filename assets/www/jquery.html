@@ -3,48 +3,164 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="viewport"
-          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi"/>-->
+    <meta name="viewport" content="user-scalable=yes,initial-scale=1,minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi"/>
+
     <title>Hello World</title>
 
     <link rel="stylesheet" type="text/css" href="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.css"/>
     <script type="text/javascript" src="js/lib/jquery-mobile/jquery-1.9.1.min.js"></script>
-
     <script>
 
-        $(document).bind('moblieinit', function () {
-            console.log(300)
-            $.mobile.changePge('#contact', {transition: 'pop', reverse: false});
+
+        $(document).bind('mobileinit', function () {
+
+            $.extend($.mobile ,{
+                defaultPageTransition: 'none'
+                ,loadingMessageTextVisible:true
+                ,loadingMessage:'载入中...'
+                ,pageLoadErrorMessage:'载入失败'
+            });
+//            $.mobile.changePge('#contact', {transition: 'pop', reverse: false});
         });
+
     </script>
     <script type="text/javascript" src="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.js"></script>
+
+
+<style type="text/css">
+    .ui-page {
+        backface-visibility:hidden ;
+        -webkit-backface-visibility:hidden ;  /* Chrome and Safari */
+        -moz-backface-visibility:hidden ;  /* Firefox */
+    }
+    .in, .out {
+        -webkit-animation-timing-function: ease-in-out;
+        -webkit-animation-duration: 1500ms;
+    }
+</style>
+
 </head>
+
+
+
 <body id="stage">
-<div data-role="page">
+
+<div data-role="page" id="home">
+
     <div data-role="header" data-position="fixed">
         <h1>Navigation</h1>
     </div>
-    <!-- /header -->
+
+
     <div data-role="content">
+
+        <!--<div data-role="controlgroup" data-type="horizontal">-->
+        <div data-role="controlgroup">
+            　<a href="index.html" data-role="button">Yes</a><a href="index.html" data-role="button">No</a><a href="index.html" data-role="button">Maybe</a>
+        </div>
+
         <ul data-role="listview" data-dividertheme="d" style="margin-top: 0;">
-            <li data-role="list-divider">Royal Family</li>
+            <li data-role="list-divider">列表头 1</li>
+            <li><a href="test/iscroll/index.html" data-ajax="false">pull-to-refresh</a></li>
             <li><a href="#">Henry VIII</a></li>
-            <li><a href="test/pull-to-refresh/index.html">pull-to-refresh</a></li>
             <li><a href="#nav1">Prince of Wales</a></li>
             <li><a href="#nav1">Elizabeth I</a></li>
             <li><a href="#nav1">Elizabeth II</a></li>
-            <li data-role="list-divider">Prime Miniseters</li>
+            <li data-role="list-divider">列表头 2</li>
             <li><a href="#nav2">Winston Churchill</a></li>
             <li><a href="#nav2">Tony Blare</a></li>
             <li><a href="#nav2">David Cameron</a></li>
         </ul>
+
+
+
+        <!--Basic Popup-->
+        <a href="#popupBasic" data-rel="popup" data-role="button" data-inline="true" data-corners="false" data-shadow="false" data-transition="pop">Basic Popup</a>
+        <div data-role="popup" id="popupBasic">
+            <p>This is a completely basic popup, no options set.</p>
+        </div>
+
+        <!--actions-->
+
+        <a href="#popupMenu" data-iconpos="top" data-rel="popup" data-role="button" data-inline="true" data-transition="fade" data-icon="gear" data-theme="e">Actions...</a>
+        <div data-role="popup" id="popupMenu" data-theme="d">
+            <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
+                <li data-role="divider" data-theme="e">Choose an action</li>
+                <li><a href="methods.html">View details</a></li>
+                <li><a href="methods.html">Edit</a></li>
+                <li><a href="methods.html">Disable</a></li>
+                <li><a href="methods.html">Delete</a><span class="ui-li-count">42</span></li>
+            </ul>
+        </div>
+        <!--end -->
+        <div>生成可缩放list</div>
+        <a href="#nestedmenu" data-rel="popup" data-role="button">可缩放list</a>
+        <div data-role="popup" id="nestedmenu" data-theme="none">
+            <div data-role="collapsible-set" data-theme="b" data-content-theme="c" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" style="margin:0; width:250px;">
+                <div data-role="collapsible" data-inset="false">
+                    <h2>Colors</h2>
+                    <ul data-role="listview">
+                        <li><a href="#">Red</a></li>
+                        <li><a href="#">Blue</a></li>
+                    </ul>
+                </div>
+                <div data-role="collapsible" data-inset="false">
+                    <h2>Shapes</h2>
+                    <ul data-role="listview">
+                        <li><a href="#">Circle</a></li>
+                        <li><a href="#">Square</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div>可缩放列表</div>
+        <div data-role="collapsible" data-theme="b" data-content-theme="c">
+            <h2>Favorite Spice Girl?</h2>
+            <ul data-role="listview">
+                <li><a href="index.html">Posh</a></li>
+                <li><a href="index.html">Scary</a></li>
+                <li><a href="index.html">Sporty</a></li>
+                <li><a href="index.html">Baby</a></li>
+                <li><a href="index.html">Ginger</a></li>
+            </ul>
+        </div>
+
+        <a href="#dialog" data-rel="popup" data-position-to="window" data-role="button" data-transition="slidedown">删除对话框</a>
+        <div data-role="popup" id="dialog" data-shadow="false" data-overlay-theme="a" data-theme="c">
+            <div data-role="header" data-theme="a">
+                <h1>Delete Page?</h1>
+            </div>
+            <div data-role="content" data-theme="d">
+                <h3>Are you sure you want to delete this page?</h3>
+                <p>This action cannot be undone.</p>
+                <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">No</a>
+                <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="b">Yes, Delete it</a>
+            </div>
+        </div>
+
+        <a href="#login" data-role="button" data-inline="false" data-transition="none" data-icon="gear" data-theme="b">登录</a>
+
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <input data-role="none" type="number" name="username" id="username" value="" />
+        </div>
+
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <fieldset data-role="controlgroup">
+                <legend>Agree to the terms:</legend>
+                <input type="checkbox" name="checkbox-agree" id="checkbox-agree" class="custom" />
+                <label for="checkbox-agree">I agree</label>
+            </fieldset>
+        </div>
+
     </div>
     <!-- /content -->
     <div data-role="footer" data-position="fixed">
         <div data-role="navbar">
             <ul>
-                <li><a href="#nav1" class="ui-btn-active">Royals</a></li>
-                <li><a href="#nav2">Leaders</a></li>
+                <li><a data-direction="reverse" data-transition="none" href="#nav1" class="ui-btn-active">Royals</a></li>
+                <li><a data-transition="none" href="#nav2">Leaders</a></li>
             </ul>
         </div>
         <!-- /navbar -->
@@ -52,32 +168,48 @@
     <!-- /footer -->
 </div>
 <!-- /page -->
-<div data-role="page" id="nav1" data-position="fixed">
+
+<!--登录-->
+<div data-role="page" id="login">
     <div data-role="header" data-position="fixed">
-        <h1>Royal Family</h1>
+        <h1>登录</h1>
     </div>
-    <!-- /header -->
+
     <div data-role="content">
-        <p>Members and relatives of the British Royal Family historically represented the monarch in various places
-            throughout the British Empire, sometimes for extended periods as viceroys, or for specific ceremonies or
-            events. Today, they often perform ceremonial and social duties throughout the United Kingdom and abroad on
-            behalf of the UK, but, aside from the monarch, have no constitutional role in the affairs of government.
-            This is the same for the other realms of the Commonwealth though the family there acts on behalf of, is
-            funded by, and represents the sovereign of that particular state, and not the United Kingdom.</P>
+        <form>
+            <div style="padding:10px 20px;">
+                <h3>登录</h3>
+                <label for="un" class="ui-hidden-accessible">Username:</label>
+                <input type="text" name="user" id="un" value="" placeholder="用户名" data-theme="a">
+                <label for="pw" class="ui-hidden-accessible">Password:</label>
+                <input type="password" name="pass" id="pw" value="" placeholder="密码" data-theme="a">
+                <button type="submit" data-theme="b" data-icon="check">登录</button>
+            </div>
+        </form>
     </div>
-    <!-- /content -->
+
     <div data-role="footer" data-position="fixed">
-        <h4>Royal Family</h4>
+        <div data-role="navbar">
+            <ul>
+                <li><a data-direction="reverse" data-transition="none" href="#nav1">忘记密码</a></li>
+                <li><a data-transition="none" href="#nav2">注册</a></li>
+            </ul>
+        </div>
     </div>
-    <!-- /header -->
+
 </div>
-<!-- /page -->
+
+<!--登录 end-->
+
 <div data-role="page" id="nav2" data-position="fixed">
+
     <div data-role="header" data-position="fixed">
-        <h1>Prime Ministers</h1>
+        <h1>联系我们</h1>
     </div>
     <!-- /header -->
+
     <div id="wrapper">
+        <a href="#home" class="ui-btn-active">Royals</a>
         <div>
             <p>Members and relatives of the British Royal Family historically represented the monarch in various places
                 throughout the British Empire, sometimes for extended periods as viceroys, or for specific ceremonies or
@@ -122,54 +254,38 @@
                 funded by, and represents the sovereign of that particular state, and not the United Kingdom.</P>
         </div>
     </div>
-    <script type="text/javascript" src="js/lib/iscroll/iscroll.js"></script>
 
-    <script type="text/javascript">
-
-        var myScroll;
-        function loaded() {
-            myScroll = new iScroll('wrapper');
-        }
-
-        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
-        /* * * * * * * *
-         *
-         * Use this for high compatibility (iDevice + Android)
-         *
-         */
-        document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
-        /*
-         * * * * * * * */
-
-
-        /* * * * * * * *
-         *
-         * Use this for iDevice only
-         *
-         */
-        //document.addEventListener('DOMContentLoaded', loaded, false);
-        /*
-         * * * * * * * */
-
-
-        /* * * * * * * *
-         *
-         * Use this if nothing else works
-         *
-         */
-        //window.addEventListener('load', setTimeout(function () { loaded(); }, 200), false);
-        /*
-         * * * * * * * */
-
-    </script>
     <!-- /content -->
     <div data-role="footer" data-position="fixed">
         <h4>Prime Minister</h4>
     </div>
     <!-- /header -->
 </div>
+
+
+<div data-role="page" id="nav1" data-position="fixed">
+    <div data-role="header" data-position="fixed">
+        <h1>Royal Family</h1>
+    </div>
+    <!-- /header -->
+    <div data-role="content">
+        <p>Members and relatives of the British Royal Family historically represented the monarch in various places
+            throughout the British Empire, sometimes for extended periods as viceroys, or for specific ceremonies or
+            events. Today, they often perform ceremonial and social duties throughout the United Kingdom and abroad on
+            behalf of the UK, but, aside from the monarch, have no constitutional role in the affairs of government.
+            This is the same for the other realms of the Commonwealth though the family there acts on behalf of, is
+            funded by, and represents the sovereign of that particular state, and not the United Kingdom.</P>
+    </div>
+    <!-- /content -->
+    <div data-role="footer" data-position="fixed">
+        <h4>Royal Family</h4>
+    </div>
+    <!-- /header -->
+</div>
+<!-- /page -->
+
 <!-- /page -->
 
 </body>
+
 </html>

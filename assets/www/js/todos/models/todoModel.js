@@ -6,11 +6,11 @@ var app = app || {};
 	// 任务模型
 	// ----------
 
-	// Our basic **Todo** model has `title`, `order`, and `completed` attributes.
+	// Our basic ** Todos model has `title`, `order`, and `completed` attributes.
 	app.Todo = Backbone.Model.extend({
         // Default attributes for the list
         // and ensure that each todo created has `title` and `completed` keys.
-        urlRoot:'http://192.168.1.101:3001/book'
+        urlRoot:'http://192.168.1.8:3001/book'
         ,idAttribute:'_id'
         ,defaults: {
             completed: false
@@ -26,15 +26,12 @@ var app = app || {};
             }
 
         }
-		// Toggle the `completed` state of this todo item.
+		// Toggle the `completed` state of this todos item.
         ,toggle: function() {
 //            console.log(this);
 //            console.log(this.isNew());
             this.save({
                 completed: !this.get('completed')
-            },{
-                wait: true,
-                cache:false
             });
     }
 

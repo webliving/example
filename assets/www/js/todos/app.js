@@ -1,13 +1,26 @@
 
+//指示jQuery是否支持W3C的"Cross-Origin Resource Sharing" （跨域资源共享）
+$.support.cors=true;
+
 var app = app || {};
 var ENTER_KEY = 13;
+_.templateSettings = {
+    evaluate : /\{%([\s\S]+?)\%\}/g,
+    interpolate : /\{%=([\s\S]+?)\%\}/g,
+    escape : /\{%-([\s\S]+?)%\}/g
+};
+
+/*Backbone.sync = function (method, model) {
+//    console.log(this);
+};*/
 
 $(function() {
 
-    // Kick things off by creating the **App**.
-    new app.AppView();
+	// Kick things off by creating the **App**.
+	new app.AppView();
 
 });
+
 
 
 // 定义模型类
@@ -62,3 +75,30 @@ books.unshift({ // 将模型追加到集合尾部
 //books.pop();
 // 在控制台输出集合中的模型列表
 console.dir(books.models);*/
+
+
+
+
+// 定义Book模型类
+var Book = Backbone.Model.extend({
+    defaults : {
+        name : 'unknown',
+        author : 'unknown',
+        price : 0
+    }
+});
+
+var computerBook=Book.extend({
+    defaults:{
+        type:'web',
+        lang:'js'
+    }
+});
+// 实例化模型对象
+var javabook = new computerBook({
+    name : 'Thinking in Java',
+    author : 'Bruce Eckel',
+    price : 395.70
+});
+
+console.log(javabook);

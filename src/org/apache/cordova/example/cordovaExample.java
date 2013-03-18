@@ -28,11 +28,13 @@ public class cordovaExample extends DroidGap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        // 设置开启画面
         super.setIntegerProperty( "splashscreen", R.drawable.splash);
+        // 加载URL地址的时候会强制一个timeout时间
         // super.setIntegerProperty("loadUrlTimeoutValue", 120000);
        
         // Set by <content src="index.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl(),5000);
+        super.loadUrl(Config.getStartUrl(),3000);
         //super.loadUrl("file:///android_asset/www/index.html")
     }
 }

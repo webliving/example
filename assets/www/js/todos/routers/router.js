@@ -8,10 +8,28 @@ var app = app || {};
 
 	var Workspace = Backbone.Router.extend({
 		routes:{
-			'*filter': 'setFilter'
-		},
+            "help":"help",    // http://localhost:3001/backbone/#help
+            "/:id": "getCertificate",
+            "search/:query":"search",  // http://localhost:3001/backbone/#search/p7
+            '*filter': 'setFilter'
+        },
+        help:function(a,b){
+            console.log(a,b);
+        },
+        search:function(a,b){
+          console.log(a,b); // p7 undefined
+        },
+        getCertificate:function(id){
 
+          console.log(id);
+
+        },
+        /**
+         *
+         * @param param 锚点字符
+         */
 		setFilter: function( param ) {
+
 			// Set the current filter to be used
 			window.app.TodoFilter = param.trim() || '';
 

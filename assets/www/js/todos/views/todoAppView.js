@@ -14,7 +14,8 @@ $(function( $ ) {
 		el: '#todoapp',
 
 		// Our template for the line of statistics at the bottom of the app.
-		statsTemplate:$('#stats-template').html(),
+//		statsTemplate:$('#stats-template').html(),
+		statsTemplate:_.template($('#stats-template').html()),
 
 		// Delegated events for creating new items, and clearing completed ones.
 		events: {
@@ -41,9 +42,10 @@ $(function( $ ) {
 			window.app.Todos.on( 'all', this.render, this );
 
 			app.Todos.fetch({
-//                add: true // 传递add参数来通知集合进行添加，而不是覆盖
                 cache:false,
+//                add: true // 传递add参数来通知集合进行添加，而不是覆盖
                 success:function(collection, resp){
+                    console.log(resp);
 //                    var test=app.Todos.getIds();
 //                    app.Todos.updateAll();
 //                    console.log(resp);
@@ -51,7 +53,16 @@ $(function( $ ) {
 
                 }
             });
+
+            /*app.Todos.fetch({
+//                add: true, // 传递add参数来通知集合进行添加，而不是覆盖
+                url:'/book?page=100',
+                success:function(collection, resp){
+
+                }
+            });*/
 		},
+
 
 		// Re-rendering the App just means refreshing the statistics -- the rest
 		// of the app doesn't change.
@@ -63,7 +74,12 @@ $(function( $ ) {
 				this.$main.show();
 				this.$footer.show();
 
-				this.$footer.html(Mustache.to_html(this.statsTemplate, {
+				/*this.$footer.html(Mustache.to_html(this.statsTemplate, {
+                    completed: completed,
+                    remaining: remaining
+                }));*/
+
+                this.$footer.html(this.statsTemplate({
                     completed: completed,
                     remaining: remaining
                 }));
@@ -98,6 +114,7 @@ $(function( $ ) {
 		},
 
 		filterAll : function () {
+            // 循环方法绑定视图上 this
 			app.Todos.each(this.filterOne, this);
 		},
 
@@ -132,7 +149,11 @@ $(function( $ ) {
 
 		// Clear all completed todos items, destroying their models.
 		clearCompleted: function() {
-            app.Todos.deleteAll();
+
+            app.Todos.deleteCompleted({
+
+            });
+
 			/*_.each( window.app.Todos.completed(), function( todo ) {
 				todo.destroy();
 			});
@@ -141,6 +162,7 @@ $(function( $ ) {
 		},
 
 		toggleAllComplete: function() {
+
 			var completed = this.allCheckbox.checked;
 
 			app.Todos.each(function(mTodo) {
@@ -150,7 +172,7 @@ $(function( $ ) {
 			});
 
 
-            app.Todos.updateAll();
+            app.Todos.updateCompleted();
 //            app.Todos.update(app.Todos.models);
 		}
 	});

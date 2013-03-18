@@ -13,7 +13,8 @@ $(function() {
 		tagName:  'li',
 
 		// Cache the template function for a single item.
-		template:$('#item-template').html(),
+		renderData:_.template( $('#item-template').html() ),
+//		template:$('#item-template').html(),
 
 		// The DOM events specific to an item.
 		events: {
@@ -41,8 +42,9 @@ $(function() {
 		render: function() {
 
 //            console.log('render',this.model);
-			this.$el.html(Mustache.to_html(this.template,this.model.toJSON()));
-//			this.$el.html( this.template( this.model.toJSON() ) );
+//			this.$el.html(Mustache.to_html(this.template,this.model.toJSON()));
+            // underscore tmpl
+			this.$el.html( this.renderData( this.model.toJSON() ) );
 			this.$el.toggleClass( 'completed', this.model.get('completed') );
 
 			this.toggleVisible();
@@ -50,14 +52,21 @@ $(function() {
 			return this;
 		},
 
+        // 可见开关
 		toggleVisible : function () {
 			this.$el.toggleClass( 'hidden',  this.isHidden());
 		},
 
+        /**
+         * 是否需要隐藏
+         * @returns {boolean|*|boolean}
+         */
 		isHidden : function () {
 			var isCompleted = this.model.get('completed');
-			return ( // hidden cases only
+			return (
+                // 没有完成 并且 是完成列表
 				(!isCompleted && app.TodoFilter === 'completed')
+                // 已经完成 并且 是未完成列表
 				|| (isCompleted && app.TodoFilter === 'active')
 			);
 		},
@@ -83,9 +92,11 @@ $(function() {
 			if ( value!=this.model.get('title')) {
                 // 保存修改
 				this.model.save(
-                    { title: value }
+                    {
+                        title: value
+                    }
                     ,{
-                        //wait: true // 控制只有在服务器返回成功之后（响应状态码为200），才将模型对象添加到集合中
+                        wait: true // 控制只有在服务器返回成功之后（响应状态码为200），才将模型对象添加到集合中
                     }
                 );
 			} else if(!value) {
