@@ -23,9 +23,21 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        var that=this;
+        /*$.extend($.mobile ,{
+            defaultPageTransition: 'none'
+            ,loadingMessageTextVisible:true
+//                ,showPageLoadingMsg:true
+//                ,hidePageLoadingMsg:true
+            ,loadingMessage:'载入中...'
+        });
+
+        $.mobile.ajaxEnabled = false;
+        $.mobile.allowCrossDomainPages=true;*/
+
         document.addEventListener('offline', this.onOffline, false);
         document.addEventListener('online', this.onOnline, false);
+
+        var that=this;
 
         deviceInfo();
         // 检测网络连接
@@ -37,6 +49,7 @@ var app = {
         // 返回键
 //        document.addEventListener("backbutton", eventBackButton, false);
         app.receivedEvent('deviceready');
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -246,3 +259,7 @@ function init() {
     // document.addEventListener("touchmove", preventBehavior, false);
     document.addEventListener("deviceready", deviceInfo, true);
 }*/
+
+
+// 应用初始化
+app.initialize();

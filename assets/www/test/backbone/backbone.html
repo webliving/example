@@ -10,9 +10,8 @@
 </head>
 
 <section id="todoapp">
-    <span onclick="window.location.reload();" style="font-size: 16px;">reload</span>
     <header id="header">
-        <h1>todos</h1>
+        <!--<h1>todos</h1>-->
         <input id="new-todo" placeholder="What needs to be done?" autofocus>
     </header>
     <section id="main">
@@ -25,28 +24,28 @@
 
 <script type="text/template" id="item-template">
     <div class="view">
-        <input class="toggle" type="checkbox" {{#completed}}checked{{/completed}}{{^completed}}{{/completed}} />
-        <label>{{&title}}</label>
+        <input class="toggle" type="checkbox" {%= completed ? 'checked' : '' %} />
+        <label>{%- title %}</label>
         <button class="destroy"></button>
     </div>
-    <input class="edit" value="{{&title}}">
+    <input class="edit" value="{%- title %}">
 </script>
 <script type="text/template" id="stats-template">
-    <span id="todo-count"><strong>{{&remaining}}</strong>items left</span>
+    <span id="todo-count"><strong>{%= remaining %}</strong> {%= remaining === 1 ? 'item' : 'items' %} left</span>
     <ul id="filters">
         <li>
-            <a class="selected" href="#/">All</a>
+            <a class="selected" href="#/">A</a>
         </li>
         <li>
-            <a href="#/active">Active</a>
+            <a href="#/active">T</a>
         </li>
         <li>
-            <a href="#/completed">Completed</a>
+            <a href="#/completed">C</a>
         </li>
     </ul>
-    {{#completed}}
-    <button id="clear-completed">Clear completed ({{&completed}})</button>
-    {{/completed}}
+    {% if (completed) { %}
+    <button id="clear-completed">Cle({%= completed %})</button>
+    {% } %}
 </script>
 
 
@@ -55,7 +54,7 @@
 <!--<script src="/javascripts/lib/backbone/backbone-0.9.2.js"></script>-->
 <script src="../../js/lib/backbone/backbone-0.9.10.js"></script>
 <!--<script src="/javascripts/lib/backbone/backbone-localstorage.js"></script>-->
-<script src="../../js/lib/mustache/mustache.js"></script>
+<!--<script src="../../js/lib/mustache/mustache.js"></script>-->
 
 
 

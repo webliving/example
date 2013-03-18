@@ -35,11 +35,10 @@ body {
 }
 
 #todoapp {
-    width:470px;
+    width:100%;
     background: #fff;
     background: rgba(255, 255, 255, 0.9);
-    margin: 130px 0 40px 0;
-    border: 1px solid #ccc;
+    margin: 0;
     position: relative;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
