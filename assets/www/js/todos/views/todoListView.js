@@ -20,6 +20,7 @@ $(function() {
 		events: {
 			'click .toggle':	'togglecompleted',
 			'dblclick label':	'edit',
+			'taphold label':	'edit',
 			'click .destroy':	'clear',
 			'keypress .edit':	'updateOnEnter',
 			'blur .edit':		'close'
@@ -44,7 +45,7 @@ $(function() {
 //            console.log('render',this.model);
 //			this.$el.html(Mustache.to_html(this.template,this.model.toJSON()));
             // underscore tmpl
-			this.$el.html( this.renderData( this.model.toJSON() ) );
+			this.$el.html( this.renderData( this.model.toJSON() )).attr('id',this.model.cid);
 			this.$el.toggleClass( 'completed', this.model.get('completed') );
 
 			this.toggleVisible();
@@ -74,7 +75,15 @@ $(function() {
 		// 切换完成状态
 		togglecompleted: function(e) {
 
-			this.model.toggle();
+//			this.model.toggle();
+
+            var model=this.model;
+            model.set({
+                completed: !model.get('completed')
+            });
+
+            app.Todos.updateOne(model,{});
+
 		},
 
 		// Switch this view into `"editing"` mode, displaying the input field.

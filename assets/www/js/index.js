@@ -187,17 +187,15 @@ function close() {
 
 // 获取联系人
 function contacts_success(contacts) {
-//    alert(contacts[2].name.formatted);
+    var jContact=$('#contact');
+    jContact.empty();
     for(var i= 0,k=contacts.length;i<k;i++){
         $('<p/>',{
 //            text:contacts[i].name.formatted
             text:contacts[i].displayName
-        }).appendTo($('body'));
+        }).appendTo(jContact);
     }
-    /*alert(contacts.length
-        + ' contacts returned.'
-        + (contacts[2] && contacts[2].name ? (' Third contact is ' + contacts[2].name.formatted)
-        : ''));*/
+
 }
 
 function get_contacts() {
@@ -211,6 +209,18 @@ function get_contacts() {
 
 // 获取联系人 end
 
+// 创建联系人
+ function createContacts(){
+     console.log('test');
+     var contact=navigator.contacts.create({displayName:"卢怀建likeweb"});
+     var phones={type:'work',value:15866660000};
+     contact.phoneNumbers=[phones];
+     contact.save(function(){
+         console.log('创建成功');
+     },function(){
+         console.log('创建失败');
+     });
+ }
 // 检测网络类型
 function check_network() {
     var networkState = navigator.network.connection.type;

@@ -3,6 +3,10 @@ body {
     margin: 0;
     padding: 0;
 }
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+    outline: none;
+}
 
 button {
     margin: 0;
@@ -14,7 +18,7 @@ button {
     font-family: inherit;
     color: inherit;
     -webkit-appearance: none;
-    /*-moz-appearance: none;*/
+    -moz-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
     appearance: none;
@@ -38,7 +42,8 @@ body {
     width:100%;
     background: #fff;
     background: rgba(255, 255, 255, 0.9);
-    margin: 0;
+    margin: 130px 0 40px 0;
+    border: 1px solid #ccc;
     position: relative;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -136,7 +141,9 @@ body {
 }
 
 #new-todo {
-    padding: 16px 16px 16px 60px;
+    position: relative;
+    left: 60px;
+    padding: 16px 16px 16px 0px;
     border: none;
     background: rgba(0, 0, 0, 0.02);
     z-index: 2;
