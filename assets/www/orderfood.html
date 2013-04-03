@@ -1,0 +1,755 @@
+
+<div id="orderfood" class="uiPage ui-page-hidden">
+    <!--点餐-->
+
+    <!--页眉-->
+    <div class="header">
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>点餐</h1>
+            </div>
+            <a class="navRight" href="#sideBarCategory" id="btnDishCategory"><i class="icon-th-list"></i></a>
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper" id="wrapperOrderfood">
+        <div class="content insetContent contentOrderfood" style="position:absolute;width:100%;padding: 0;min-height: 100%;">
+            <!--<div id="pullDown">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+            </div>-->
+
+            <!--列表模板-->
+            <script type="text/template" id="tempDishListLi">
+
+                <div class="dishImg"><img src="<%- absImgUrl %>" /></div>
+
+                <div class="dishIntro"><p><%- name %></p>
+                    <p>￥ <span class="price"><%- price %></span> /<%- unit %></p>
+                </div>
+
+                <div class="dishOpr">
+                    <span>-</span>
+                    <strong>2</strong>
+                    <span>+</span>
+                </div>
+
+            </script>
+            <!--列表模板 end -->
+
+            <div id="dishBox">
+
+            </div>
+            <!--<div class="listDishDiv">
+
+                <ul id="listDish" class="listDish">
+
+                </ul>
+
+            </div>-->
+
+            <!--上拉-->
+            <div id="pullUp">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">向上拉取其它分类...</span>
+            </div>
+            <!--上拉-->
+
+        </div>
+
+    </div>
+
+    <!--分类列表-->
+    <div id="navCategory">
+        <!--分类列表模板-->
+        <script type="text/template" id="tempDishType">
+            <li categoryid="<%- id %>">
+                <a>
+                    <%- name %>
+                </a>
+            </li>
+        </script>
+        <!--分类列表模板 end -->
+
+        <h2>菜品分类</h2>
+        <div id="navCategoryList">
+
+        </div>
+    </div>
+    <!--分类列表 end-->
+
+</div>
+
+
+
+<script id="jsorderfood">
+
+var orderfood={
+
+};
+
+function toggleSideCategory(e,bIsFromSide){
+    console.log('切换分类导航');
+    console.log(app.sideCategory);
+    var jQnavCategory=$('#navCategory'),
+            nNavCategory=jQnavCategory.width(),
+            jQorderfood=$('#orderfood'),
+            isSideShow=app.sideCategory,
+            nAnimate=isSideShow ? 0 : nNavCategory;
+    app.isFromSide=1;
+    console.log('isSideShow',isSideShow);
+    jQnavCategory.css('display',isSideShow ? 'block':'block');
+    jQorderfood.stop(this,false,true);
+
+    jQorderfood.animate({
+        'left':nAnimate
+    },300,function(){
+
+        app.sideCategory ? (function(){app.sideCategory=0})():app.sideCategory=1;
+        jQnavCategory.css('display',app.sideCategory ? 'block':'none');
+
+    });
+
+}
+// 切换显示分类导航
+$('#btnDishCategory').on('click',toggleSideCategory);
+
+app.ModMyMenu = Backbone.Model.extend({
+    idAttribute:'Id'
+    ,defaults: {
+        Id: '',
+        Name: ''
+    }
+    ,toggle: function() {
+        this.save({
+            completed: !this.get('completed')
+        });
+    }
+});
+
+var ColMyMenu = Backbone.Collection.extend({
+    model:app.ModMyMenu
+    ,localStorage: new Store('myMenu')
+});
+// 我的菜单集合
+app.colMyMenu=new ColMyMenu();
+app.colMyMenu.create({Id:4,Name:'红泥茶香饼'});
+
+
+
+app.ModDish = Backbone.Model.extend({
+    // Default attributes for the list
+    urlRoot:'http://192.168.1.10/cloud/API/GetDishesByGroupIdAndBranchId'
+    ,idAttribute:'id'
+    ,defaults: {
+//        completed: false
+        absImgUrl: ''
+    }
+       // Toggle the `completed` state of this todos item.
+    ,toggle: function() {
+
+        this.save({
+            completed: !this.get('completed')
+        });
+    }
+
+});
+var ColDish = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: app.ModDish
+//    url:'http://192.168.1.10/cloud/API/GetDishesByGroupIdAndBranchId'
+
+
+});
+
+
+
+app.TodoView = Backbone.View.extend({
+
+    //... is a list tag.
+    tagName:  'li',
+
+    // Cache the template function for a single item.
+    renderData:_.template( $('#tempDishListLi').html() ),
+//		template:$('#item-template').html(),
+
+    // The DOM events specific to an item.
+    events: {
+        'click .toggle':	'togglecompleted',
+        'dblclick label':	'edit',
+        'taphold label':	'edit',
+        'click .destroy':	'clear',
+        'keypress .edit':	'updateOnEnter',
+        'blur .edit':		'close'
+    },
+
+    // The TodoView listens for changes to its model, re-rendering. Since there's
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+    // app, we set a direct reference on the model for convenience.
+    initialize: function() {
+//        this.model.on( 'change', this.render, this );
+        this.model.on( 'destroy', this.remove, this );
+        this.model.on( 'visible', this.toggleVisible, this );
+        // 0.9.10
+        this.model.on( 'invalid', function(){console.log('invalid');}, this );
+        // 0.9.2
+        this.model.on( 'error', function(model,error){console.log(error);return false}, this );
+    },
+
+    // Re-render the titles of the todo item.
+    render: function() {
+
+//            console.log('render',this.model);
+//			this.$el.html(Mustache.to_html(this.template,this.model.toJSON()));
+        // underscore tmpl
+        this.$el.html( this.renderData( this.model.toJSON() )).attr('id',this.model.cid);
+        this.$el.toggleClass( 'completed', this.model.get('completed') );
+
+        this.toggleVisible();
+        this.input = this.$('.edit');
+        return this;
+    },
+
+    // 可见开关
+    toggleVisible : function () {
+        this.$el.toggleClass( 'hidden',  this.isHidden());
+    },
+
+    /**
+     * 是否需要隐藏
+     * @returns {boolean|*|boolean}
+     */
+    isHidden : function () {
+        var isCompleted = this.model.get('completed');
+        return (
+            // 没有完成 并且 是完成列表
+                (!isCompleted && app.TodoFilter === 'completed')
+                    // 已经完成 并且 是未完成列表
+                        || (isCompleted && app.TodoFilter === 'active')
+                );
+    },
+
+    // 切换完成状态
+    togglecompleted: function(e) {
+
+//			this.model.toggle();
+
+        var model=this.model;
+        model.set({
+            completed: !model.get('completed')
+        });
+
+        app.Todos.updateOne(model,{});
+
+    },
+
+    // Switch this view into `"editing"` mode, displaying the input field.
+    edit: function() {
+        this.$el.addClass('editing');
+        this.input.focus();
+    },
+
+    // Close the `"editing"` mode, saving changes to the todos.
+    close: function() {
+
+        var value = this.input.val().trim(),
+                bIsChange=this.model.hasChanged();
+
+        if ( value!=this.model.get('title')) {
+            // 保存修改
+            this.model.save(
+                    {
+                        title: value
+                    }
+                    ,{
+                        wait: true // 控制只有在服务器返回成功之后（响应状态码为200），才将模型对象添加到集合中
+                    }
+            );
+        } else if(!value) {
+            // 删除列表
+            this.clear();
+        }
+
+        this.$el.removeClass('editing');
+    },
+
+    // If you hit `enter`, we're through editing the item.
+    updateOnEnter: function( e ) {
+        if ( e.which === ENTER_KEY ) {
+            $(e.target).blur();
+//				this.close();
+        }
+    },
+
+    // Remove the item, destroy the model from *localStorage* and delete its view.
+    clear: function() {
+        this.model.destroy();
+    }
+});
+
+app.AppView = Backbone.View.extend({
+
+    // Instead of generating a new element, bind to the existing skeleton of
+    // the App already present in the HTML.
+    el: '#wrapperOrderfood',
+
+    // Our template for the line of statistics at the bottom of the app.
+//		statsTemplate:$('#stats-template').html(),
+
+//    statsTemplate:_.template($('#stats-template').html()),
+
+    // Delegated events for creating new items, and clearing completed ones.
+    events: {
+        'keypress #new-todo': 'createOnEnter',
+        'click #clear-completed': 'clearCompleted',
+        'click #toggle-all': 'toggleAllComplete'
+    },
+
+    // At initialization we bind to the relevant events on the `Todos`
+    // collection, when items are added or changed. Kick things off by
+    // loading any preexisting todos that might be saved in *localStorage*.
+    initialize: function() {
+//        this.input = this.$('#new-todo');
+//        this.allCheckbox = this.$('#toggle-all')[0];
+//        this.$footer = this.$('#footer');
+//        this.$main = this.$('#main');
+
+        window.app.Todos.on( 'add', this.addOne, this );
+        // 数据在成功同步到集合中之后，会触发reset事件
+        window.app.Todos.on( 'reset', this.addAll, this );
+//        window.app.Todos.on('change:completed', this.filterOne, this);
+//        window.app.Todos.on("filter", this.filterAll, this);
+
+//        window.app.Todos.on( 'all', this.render, this );
+
+    },
+
+
+    // Re-rendering the App just means refreshing the statistics -- the rest
+    // of the app doesn't change.
+    render: function() {
+        /*var completed = app.Todos.completed().length;
+         var remaining = app.Todos.remaining().length;
+
+         if ( app.Todos.length ) {
+         this.$main.show();
+         this.$footer.show();
+
+         *//*this.$footer.html(Mustache.to_html(this.statsTemplate, {
+         completed: completed,
+         remaining: remaining
+         }));*//*
+
+         this.$footer.html(this.statsTemplate({
+         completed: completed,
+         remaining: remaining
+         }));
+
+         this.$('#filters li a')
+         .removeClass('selected')
+         .filter('[href="#/' + ( app.TodoFilter || '' ) + '"]')
+         .addClass('selected');
+         } else {
+         this.$main.hide();
+         this.$footer.hide();
+         }
+
+         this.allCheckbox.checked = !remaining;*/
+    },
+
+    // Add a single todo item to the list by creating a view for it, and
+    // appending its element to the `<ul>`.
+    addOne: function( todo ) {
+//        var sHost=location.origin;
+        var sHost='http://192.168.1.10';
+
+//        console.log(todo);
+        todo.set('absImgUrl',sHost+'/cloud/images/dish/'+app.groupId+'/m_'+todo.get('image'));
+
+        var view = new app.TodoView({ model: todo });
+        $('.listDish').append( view.render().el );
+    },
+
+    // Add all items in the **Todos** collection at once.
+    addAll: function() {
+
+        $('#dishBox').html('');
+//        app.Todos.each(this.addOne, this);
+
+        var dishDiv=$('<div/>',{
+                    'class':'listDishDiv'
+                }).append($('<h2/>',{
+                            'text':orderfood.sCurType
+                        })),
+                dishList=$('<ul/>',{
+                    'class':'listDish'
+                }),
+                sHost='http://192.168.1.10';
+
+        app.Todos.each(function(modDish){
+
+            modDish.set('absImgUrl',sHost+'/cloud/images/dish/'+app.groupId+'/m_'+modDish.get('image'));
+            var view = new app.TodoView({ model: modDish });
+            dishList.append(view.render().el);
+        },this);
+
+        dishDiv.append(dishList).appendTo($('#dishBox'));
+    },
+
+    filterOne : function (todo) {
+        todo.trigger("visible");
+    },
+
+    filterAll : function () {
+        // 循环方法绑定视图上 this
+        app.Todos.each(this.filterOne, this);
+    },
+
+    // Generate the attributes for a new Todo item.
+    newAttributes: function() {
+        return {
+            title: this.input.val().trim(),
+//				order: app.Todos.nextOrder(),
+            completed: false
+        };
+    },
+
+    // If you hit return in the main input field, create new **Todo** model,
+    // persisting it to *localStorage*.
+    createOnEnter: function( e ) {
+        if ( e.which !== ENTER_KEY || !this.input.val().trim() ) {
+            return;
+        }
+
+        app.Todos.create( this.newAttributes(),{
+            wait: true,
+            success : function(model, resp) {
+                // 添加成功后, 在控制台输出集合中的模型列表
+                if(resp&&resp.state){
+                    alert('添加成功');
+                }
+
+            }
+        } );
+        this.input.val('');
+    },
+
+    // Clear all completed todos items, destroying their models.
+    clearCompleted: function() {
+
+        app.Todos.deleteCompleted({
+
+        });
+
+        /*_.each( window.app.Todos.completed(), function( todo ) {
+         todo.destroy();
+         });
+
+         return false;*/
+    },
+
+    toggleAllComplete: function() {
+
+        var completed = this.allCheckbox.checked;
+
+        app.Todos.each(function(mTodo) {
+            mTodo.set({
+                'completed': completed
+            });
+        });
+
+
+        app.Todos.updateCompleted();
+//            app.Todos.update(app.Todos.models);
+    }
+});
+
+
+// 获取分类列表
+
+$.ajax({
+    type:'get'
+    ,url:'http://192.168.1.10/cloud/API/GetDishCategoriesByGroupIdAndBranchId'
+    ,dataType:'json'
+    ,crossDomain: true
+    ,cahche:false
+    ,data:'groupId='+app.groupId+'&branchId='+app.branchId
+    ,success:function(oDishType){
+
+        var tempDishType=_.template( $('#tempDishType').html()),
+                jQnavCategoryList=$('#navCategoryList'),
+                jQTypeList=$('<ul/>',{
+//                'class':'list'
+                });
+
+        for(var i= 0,k=oDishType.length;i<k;i++){
+            var a=tempDishType(oDishType[i]);
+            jQTypeList.append(a);
+        }
+        jQnavCategoryList.empty().append(jQTypeList);
+
+        // 添加获取分类菜品功能
+        orderfood.jQTypeLi=$('li',jQnavCategoryList);
+
+        // 分类点击事件
+        orderfood.jQTypeLi.on('click',function(){
+            orderfood.jQTypeLi.removeClass('sideTypeCur');
+            $(this).addClass('sideTypeCur');
+            // 隐藏侧边分类导航
+            history.back();
+            // 根据分类 id 显示菜品
+            showDishCategory($(this).attr('categoryid'));
+//            getCategoryDish();
+        });
+
+        var myScroll;
+        if(!myScroll){
+            function loaded() {
+
+                myScroll = new iScroll('navCategoryList',{
+                    hideScrollbar:true
+//                    ,bounce:false
+                    ,useTransform:false
+                    ,checkDOMChanges:true
+
+                });
+
+                myScroll.refresh();
+            }
+
+            setTimeout(loaded,0);
+
+
+        }else{
+            myScroll.refresh();
+
+        }
+
+        console.log('获取分类成功');
+
+        // 获取列表成功其它操作...
+
+    }
+    ,error:function(err){
+        console.log('获取分类失败');
+    }
+});
+
+function showDishCategory(nCategoryId){
+    var aBranchDishes=app['group'+app.groupId]['branch'+app.branchId]['dishes'],
+            a_categoryDish=[];
+
+    jQTypeCurLi=$('li[categoryid="'+nCategoryId+'"]',orderfood.jQTypeLi.parent());
+
+    orderfood.sCurType=jQTypeCurLi.text();
+
+    a_categoryDish =_.filter(aBranchDishes, function(oDish){
+
+        return oDish.categoryId==nCategoryId;
+    });
+
+
+    // 移除旧的数据
+    app.Todos.remove(app.Todos.models);
+    // 集合添加新数据
+    app.Todos.add(a_categoryDish);
+
+    // 触发 "reset" 事件
+    app.Todos.trigger('reset');
+    orderfood.jQTypeLi.removeClass('sideTypeCur');
+    $('li[categoryid="'+nCategoryId+'"]',orderfood.jQTypeLi.parent()).addClass('sideTypeCur');
+}
+
+// 获取推荐列表
+$.ajax({
+    type:'get'
+    ,url:'http://192.168.1.10/cloud/API/GetDishesByGroupIdAndBranchId'
+    ,dataType:'json'
+    ,crossDomain: true
+    ,cahche:false
+//        ,jsonp:callbackFunction
+//        ,jsonpCallback: 'callbackFunction'
+    ,data:'groupId='+app.groupId+'&branchId='+app.branchId+'&size='+2000
+    ,success:function(oDish){
+
+        // 将门店菜品写入集团中
+        if(!app['group'+app.groupId]){
+            app['group'+app.groupId]={};
+            if(!app['group'+app.groupId]['branch'+app.branchId]){
+                app['group'+app.groupId]['branch'+app.branchId]={}
+            }
+        }
+        app['group'+app.groupId]['branch'+app.branchId]['dishes']=oDish.data;
+        // 初始化集合
+        app.Todos = new ColDish();
+        // 初始化视图
+        new app.AppView();
+
+        // 显示分类 id : 3
+        showDishCategory(3);
+
+        css3TransitionHandler2('slide',false,$('#orderfood'),app.pageActive);
+        /*
+         app.Todos = new ColDish(a_categoryDish);
+         // 初始化视图
+         //        new app.AppView();
+         // 触发渲染
+         //        app.Todos.trigger('reset');*/
+
+
+
+        /*var myScroll;
+         if(!myScroll){
+         function loaded() {
+
+         myScroll = new iScroll('wrapperOrderfood',{
+         hideScrollbar:true
+         ,checkDOMChanges:true
+
+         });
+
+         myScroll.refresh();
+         }
+
+         setTimeout(loaded, 0);
+
+
+         }else{
+         myScroll.refresh();
+
+         }*/
+
+
+        var myScroll,
+                pullDownEl, pullDownOffset,
+                pullUpEl, pullUpOffset,
+                generatedCount = 0;
+
+        function pullDownAction () {
+            var jQPrevType=$('.sideTypeCur',orderfood.jQTypeLi.parent()).prev();
+            if(jQPrevType.size()){
+                showDishCategory(jQPrevType.attr('categoryid'));
+                myScroll.refresh();
+                myScroll.scrollTo(0,0);
+            }else{
+                myScroll.refresh();
+            }
+        }
+
+        function pullUpAction () {
+            var jQPrevType=$('.sideTypeCur',orderfood.jQTypeLi.parent()).next();
+            if(jQPrevType.size()){
+                showDishCategory(jQPrevType.attr('categoryid'));
+                myScroll.refresh();
+//                myScroll.scrollTo(0,0);
+            }else{
+                var jQFirstType=$('li:first',orderfood.jQTypeLi.parent());
+                showDishCategory(jQFirstType.attr('categoryid'));
+                myScroll.refresh();
+            }
+        }
+
+        function loaded() {
+//            pullDownEl = document.getElementById('pullDown');
+//            pullDownOffset = pullDownEl.offsetHeight;
+
+            pullUpEl = document.getElementById('pullUp');
+            pullUpOffset = pullUpEl.offsetHeight;
+
+            myScroll = new iScroll('wrapperOrderfood', {
+                useTransition: false,
+                checkDOMChanges:true,
+//                topOffset: pullDownOffset,
+                // 重新计算滚动的区域
+                onRefresh: function () {
+
+                    if (pullUpEl.className.match('loading')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                    }
+
+                    /*if (pullDownEl.className.match('loading')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                    } else if (pullUpEl.className.match('loading')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                    }*/
+                },
+                onScrollMove: function () {
+
+                    if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '释放刷新...';
+                        this.maxScrollY = this.maxScrollY;
+                    } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                        this.maxScrollY = pullUpOffset;
+                    }
+
+                    /*if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'flip';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '释放刷新...';
+                        this.minScrollY = 0;
+                    } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                        this.minScrollY = -pullDownOffset;
+                    } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '释放刷新...';
+                        this.maxScrollY = this.maxScrollY;
+                    } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                        this.maxScrollY = pullUpOffset;
+                    }*/
+                },
+                onScrollEnd: function () {
+
+                    if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                        pullUpAction();	// Execute custom function (ajax call?)
+                    }
+
+                    /*if (pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'loading';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                        pullDownAction();	// Execute custom function (ajax call?)
+                    } else if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                        pullUpAction();	// Execute custom function (ajax call?)
+                    }*/
+                }
+            });
+
+//            setTimeout(function () { document.getElementById('wrapperOrderfood').style.left = '0'; }, 800);
+        }
+
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+//        document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+
+        setTimeout(loaded, 200);
+
+
+        console.log('获取菜品成功');
+
+        // 获取列表成功其它操作...
+
+
+
+    }
+    ,error:function(err){
+        console.log('获取菜品失败');
+    }
+});
+
+
+</script>

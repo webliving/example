@@ -1,0 +1,99 @@
+
+<div id="profile" class="uiPage ui-page-hidden">
+    <!--个人中心-->
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+            <div>
+                <h1>个人中心</h1>
+            </div>
+            <div class="navRight">
+
+            </div>
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperProfile">
+        <div class="content insetContent contentProfile">
+            <ul class="list">
+                <li style="position: relative;">
+                    <a href="#"><p>我的帐号 <span>330572403</span></p></a>
+                    <a href="#cancel" class="btn btnCancel tc_btn" onclick="alert(200);">注销</a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>我的预订 <span class="notice noticeBook">1</span></p></a>
+                </li>
+                <li>
+                    <a href="#"><p>我的排队 <span class="notice noticeQueue">3</span></p></a>
+                </li>
+                <li>
+                    <a href="#"><p>我的菜单 <span class="notice noticeMenu">6</span></p></a>
+                </li>
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>消息中心</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#qq"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#ww"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#qq"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#ww"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+<script>
+
+    $('.list a').on('click',function(){
+        return false;
+    });
+
+function addEventProfile(){
+    Hammer($('.list a')).on('tap',function(){
+        var sHash=$(this).attr('href');
+        sHash1=sHash.substring(1,sHash.length);
+//        $(this).trigger('click');
+        location.hash=sHash1;
+        return false;
+    });
+}
+</script>
+</div>

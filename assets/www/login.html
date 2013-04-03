@@ -1,0 +1,104 @@
+<div id="login" class="uiPage ui-page-hidden">
+    <!--页眉-->
+    <div class="header">
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>登录</h1>
+            </div>
+            <div class="navRight">
+
+            </div>
+        </div>
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperLogin">
+
+        <div class="content insetContent">
+            <form id="fmLogin" style="margin:0;padding:0;margin-bottom: 1.2em;">
+                <ul class="list listForm">
+                    <li>
+                        <input style="width: 100%;" name="phone" id="lphone" type="text" placeholder="我的帐号" />
+                    </li>
+
+                    <li>
+                        <input style="width: 100%;" name="pwd" id="lpwd" type="text" placeholder="密码" />
+                    </li>
+
+                </ul>
+
+                <a id="btnLogin" class="btn btn100P tc_btn">登录</a>
+            </form>
+
+            <a href="#forgetPSW">忘记密码</a>
+
+            <ul class="list" style="margin-top: 1.2em;">
+                <li class="noIco">
+                    <a href="#reg"><p>还没有烹烹帐号, 赶紧注册一个吧 ~</p></a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<script id="jslogin">
+    /*if(!myScroll){
+
+        var myScroll;
+        function loaded() {
+
+            myScroll = new iScroll('wrapperLogin',{
+                hideScrollbar:true
+//                            ,bounce:false
+//                            ,checkDOMChanges:true
+                ,useTransform:true
+                ,useTransition:true
+                //                    ,bounceLock:true
+                //                    ,useTransition:true
+                //                    fadeScrollbar:true
+            });
+
+            console.log(myScroll);
+        }
+
+        setTimeout(loaded, 0);
+    }else{
+        myScroll.refresh();
+    }
+
+app.allowFormsInIscroll('fmLogin');*/
+// 登录
+$('#btnLogin').on('click',function(){
+console.log($('#wrapperLogin').outerWidth());
+console.log($(window).outerHeight());
+
+
+
+    var sRegData=$('#fmLogin').serialize();
+
+    $.ajax({
+        type:'post'
+        ,url:'http://192.168.1.10/cloud/API/Login'
+        ,dataType:'json'
+        ,crossDomain: true
+        ,data:sRegData
+        ,success:function(data){
+
+            if(!data.Result){
+
+                app.memberId=data.id;
+                localStorage.setItem('memberId',data.id);
+                console.log('登录成功');
+                // 登录成功的其它操作...
+//                location.hash=''
+            }
+
+        }
+        ,error:function(err){
+            console.log('登录失败');
+        }
+    });
+});
+</script>

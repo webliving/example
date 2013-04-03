@@ -1,0 +1,614 @@
+<div id="addbook" class="uiPage ui-page-hidden">
+<style type="text/css">
+        /*内容区域*/
+    #wrapperAddbook{
+        width: 100%;
+        background-color: #ECECEC !important;
+    }
+        /*内容*/
+    #conAddBook{
+        display: none;
+        padding: 0;
+        background-color:transparent;
+    }
+    #chooseDateTime {
+        padding: 1em;
+        background-color: #fff;
+        text-align: center;
+    }
+    #selDetail{
+        padding: 0.7em 0;
+
+        text-align: center;
+    }
+    #selDetail span{
+        color: #4F5468;
+    }
+        /*功能图标*/
+    #icoGroup{
+        display: table;
+        width: 100%;
+    }
+    #icoGroup div{
+        width: 33.3333333333333333%;
+        display: table-cell;
+        font-size: 1.2em;
+        color: #4F5468;
+        -webkit-box-sizing: border-box;
+    }
+        /*mobi 选择控件*/
+    #cbsjList_dummy,#number_dummy,#formAddInput input{
+        display: none;
+    }
+    #demo_tree_list,#demo_select{
+        display: inline-block;
+    }
+    #demo_tree_list div.dwpm:nth-child(2) table{
+        display: inline-table;
+    }
+    #demo_tree_list{
+        width: 66.666666%;
+    }
+    #demo_select{
+        width: 33.333334%;
+    }
+    #demo_select table{
+        float: right;
+    }
+    .dw.dwbg.dwi{
+        width: 100%;
+    }
+    .dwc.dwpm.dwhl{
+        width: 50%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    #demo_select .dwc.dwpm.dwhl{
+        width: 100%;
+    }
+
+        /*mobi 选择控件 end*/
+
+        /*日历*/
+    #calTable{
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #D6D9D2;
+    }
+    #calTable th{
+        border: none;
+        padding: 5px;
+        color: #fff;
+        background-color: #B2B3B7;
+        font-size: 0.8em;
+    }
+    #calTable td{
+        padding: 12px 5px;
+        border: 1px solid #D6D9D2;
+        text-align: center;
+        font-weight: bold;
+        color: #CC645F;
+
+    }
+    #calTable td.disable{
+        color: #d4d4d4;
+    }
+
+    #calTable td.curDay{
+        background-color: #D2D2D2;
+    }
+    #calTable td.selDay{
+        background-color: #D02C2B;
+        color: #fff;
+    }
+
+
+
+
+</style>
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>选择时间和套餐</h1>
+            </div>
+
+            <a  class="navRight" href="#searchMixi" id="btnSearchMixi"><i class="icon-angle-right"></i></a>
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperAddbook">
+
+
+        <div class="content insetContent" id="conAddBook">
+
+            <form id="fmAddbook">
+
+                <div id="chooseDateTime">
+                    <span id="calMonth"></span>月<span id="calDate"></span>日
+                </div>
+                <div id="formAddInput">
+                    <input id="bookDate" name="bookDate" type="text" />
+                    <input id="businessHoursId" name="businessHoursId" type="text" />
+                    <input id="arriveTime" name="arriveTime" type="text" />
+                </div>
+                <table id="calTable">
+                    <thead>
+                        <tr>
+                            <th>一</th>
+                            <th>二</th>
+                            <th>三</th>
+                            <th>四</th>
+                            <th>五</th>
+                            <th>六</th>
+                            <th>日</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+
+                <div id="selDetail">
+                    您已选择: <span id="detailDate"></span> <span>(周</span><span id="detailDay"></span><span>)</span> <span id="detailTime"></span> <span id="detailTable">10人以上</span>
+                </div>
+
+                <div id="icoGroup">
+                    <div>
+                        <div style="width: 50px;padding-left:2px;text-align: center;">
+                            <i class="icon-bookmark"></i>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="icon-time"></i>
+                    </div>
+                    <div style="text-align: right;padding-right: 0.3em;">
+                        <div style="width: 50px;display: inline-block;text-align: center;">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="demo_tree_list">
+                    <ul id="cbsjList">
+
+
+                    </ul>
+                </div><div id="demo_select">
+
+                <select name="number" id="number" class="demos">
+                    <option value="2">2人</option>
+                    <option value="1">1人</option>
+                    <option value="3">3人</option>
+                    <option value="4">4人</option>
+                    <option value="5">5人</option>
+                    <option value="6">6人</option>
+                    <option value="7">7人</option>
+                    <option value="8">8人</option>
+                    <option value="9">9人</option>
+                    <option value="10">10人</option>
+                    <option value="11">11人</option>
+                    <option value="12">12人</option>
+                    <option value="13">13人</option>
+                    <option value="14">14人</option>
+                    <option value="15">15人</option>
+                    <option value="16">16人</option>
+                    <option value="17">17人</option>
+                    <option value="18">18人</option>
+                    <option value="19">19人</option>
+                    <option value="20">20人</option>
+
+
+                </select>
+            </div>
+            </form>
+
+            <!--<div style="padding: 1em;">
+                <a id="btnAddBook" class="btn btn100P tc_btn">下一步</a>
+            </div>-->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script id="jsaddbook">
+
+
+var addBook={
+  jQydtime:$('#bookDate')
+    // 餐别列表
+  ,jQcbsjList:$('#cbsjList')
+  ,jQcbsjListLi:$('#cbsjList>li')
+    //
+  ,jQnumber:$('#number')
+};
+
+//var dCurDateTime=new Date('2013-3-29');
+//var nFullY=dCurDateTime.getFullYear();
+//var nCurM=dCurDateTime.getMonth();
+//var nDate=dCurDateTime.getDate();
+// 当天星期几 : 从 0 开始
+//var dDay=dCurDateTime.getDay();
+
+
+var jQtbody=$('tbody','#calTable');
+
+function setDateTime(sSelTime){
+
+    var dDateTime=new Date(sSelTime);
+
+    var nM=dDateTime.getMonth();
+    var nD=dDateTime.getDate();
+    var dDay=dDateTime.getDay();
+    var aWeek=['日','一','二','三','四','五','六'];
+
+    $('#calMonth').text(nM+1);
+    $('#calDate').text(nD);
+    // 您已经选择 2013-12-26 (周一) ..
+    $('#detailDate').text(sSelTime);
+    $('#detailDay').text(aWeek[dDay]);
+    app.selDay='周'+aWeek[dDay];
+}
+
+//setDateTime(dCurDateTime);
+
+
+
+/*function isLeapYear(year){
+
+    if((year %4==0 && year %100!=0) || (year %400==0)) return true;
+    else return false;
+}*/
+
+
+/*function count(nDay,nDate,dCurDateTime){
+    var qc;
+    var aDate=[];
+    console.log('当前星期几',nDay);
+    console.log('当前几号',nDate);
+    if(nDay>1){
+        // 距星期一差值
+        var xc=nDay-1,
+            // 临时当前时间
+            nTemp=nDate;
+
+console.log('xc',xc);
+console.log('nTemp',nTemp);
+        // 如果本周当前全在当月
+        if(nTemp-xc>0){
+            
+            for(var m=0;m<xc;m++){
+                aDate.push(--nTemp);
+            }
+        }else{ // 如果本周不全在当月
+
+
+            // 本周在本月有多少
+            var nPrevMonthDay=xc-(xc-(nTemp-1));
+            var nCurMonDay=xc-nPrevMonthDay;
+
+            var nPrevMonthLast=isLeapYear(dCurDateTime,nCurMonDay);
+
+            console.log('nPrevMonthLast',nPrevMonthLast);
+            
+            for(var t=0;t<xc;t++){
+                if(t<nCurMonDay){
+                    aDate.push(--nTemp);
+                }else{
+                    aDate.push(nPrevMonthLast--);
+                }
+            }
+
+        }
+    }
+
+    aDate.reverse();
+    return aDate;
+}*/
+
+
+
+function abc(dCurDateTime){
+
+        var nCurDay=dCurDateTime.getDay(), // 当前星期几
+            nCurDay=nCurDay ? nCurDay: 7,
+            nCurDate=dCurDateTime.getDate(),
+            nOneDay=1000*60*60*24,
+             xc=nCurDay-1,
+                aDate=[];
+
+        /*if(nCurDay>1){
+
+            // 临时当前时间
+            var nTemp=nCurDate;
+
+            console.log('xc',xc);
+            console.log('nTemp',nTemp);
+            // 如果本周当前全在当月
+            if(nTemp-xc>0){
+
+                for(var m=0;m<xc;m++){
+                    aDate.push(--nTemp);
+                }
+            }else{ // 如果本周不全在当月
+
+
+                // 本周在本月有多少
+                var nPrevMonthDay=xc-(xc-(nTemp-1));
+                var nCurMonDay=xc-nPrevMonthDay;
+
+                var nPrevMonthLast=isLeapYear(dCurDateTime,nCurMonDay);
+
+                console.log('nPrevMonthLast',nPrevMonthLast);
+
+                for(var t=0;t<xc;t++){
+                    if(t<nCurMonDay){
+                        aDate.push(--nTemp);
+                    }else{
+                        aDate.push(nPrevMonthLast--);
+                    }
+                }
+
+            }
+        }*/
+
+
+        for(var i=0;i<3;i++){
+
+            var tr=$('<tr>');
+            for(var k=0;k<7;k++){
+                var nCountDate,
+                    sFullDateTime,
+                    isDsiable;
+
+                if(xc&&i==0&&k<xc){
+//                    nCountDate=aDate[k];
+
+                    var prevDateNum=xc-k;
+                    // 获取下一天的日期对象
+                    var dPrevDateTime=new Date(dCurDateTime.getTime()-nOneDay*prevDateNum);
+                    // getDate
+                    nCountDate=dPrevDateTime.getDate();
+                    // 完整日期
+                    sFullDateTime=dPrevDateTime.getFullYear()+'-'+(dPrevDateTime.getMonth()+1)+'-'+dPrevDateTime.getDate();
+                    isDsiable=true
+                }else{
+
+                    var nextDateNum=i*7+k-xc;
+
+                    var isCurDay =(!nextDateNum);
+
+                    // 获取下一天的日期对象
+                    var dNextDateTime=new Date(dCurDateTime.getTime()+nOneDay*nextDateNum);
+//                    console.log((dNextDateTime-dCurDateTime)/1000/60/60/24);
+
+                    // getDate
+                    nCountDate=dNextDateTime.getDate();
+                    // 完整日期
+                    sFullDateTime=dNextDateTime.getFullYear()+'-'+(dNextDateTime.getMonth()+1)+'-'+dNextDateTime.getDate();
+                    isDsiable=false;
+
+                }
+                $('<td>',{
+                    'text':nCountDate
+                    ,datetime:sFullDateTime ? sFullDateTime : ''
+                    ,'class':isDsiable ? 'disable':'' || isCurDay ? 'curDay':''
+                    ,'click':function(){
+                        if(!$(this).hasClass('disable')){
+                            var sSelTime=$(this).attr('datetime');
+
+                            addBook.jQdateTd.removeClass('selDay');
+                            $(this).addClass('selDay');
+
+                            addBook.jQydtime.val(sSelTime);
+
+                            app.book.bookDate=sSelTime;
+
+                            setDateTime(sSelTime);
+                        }
+
+                    }
+                }).appendTo(tr);
+            }
+
+            tr.appendTo(jQtbody);
+            addBook.jQdateTd=$('td',jQtbody);
+            addBook.jQdateTd.not('.disable').eq(3).trigger('click');
+        }
+    }
+
+abc(new Date(),20);
+
+// 页面切换完成, 加载餐别
+function getBusinessHours(){
+    // 获取餐别
+    $.ajax({
+        type:'get'
+        ,url:'http://192.168.1.10/cloud/API/GetBusinessHours'
+        ,dataType:'json'
+        ,crossDomain: true
+        ,cahche:false
+        ,data:'groupId='+app.groupId
+        ,success:function(oBusinessHours){
+            var nLength=oBusinessHours.length;
+
+            for(var i=0;i<nLength;i++){
+                var oCbLi=oBusinessHours[i],
+                        jQcbNameLi=$('<li>',{
+                            'typeid':oCbLi.id
+                        }),
+                        jQcbTimeUL=$('<ul>'),
+
+                        nStartTime=Number(oCbLi.startTime.substring(0,2)),
+                        nEndTime=Number(oCbLi.endTime.substring(0,2)),
+                        nMinus, // 营业时间
+                        nTimeParts; // 时间段数
+
+                var dStart=new Date('2012-1-2 '+nStartTime+':00');
+                var dEnd=new Date('2012-1-2 '+(nEndTime+1)+':00');
+
+
+
+                nMinus= nEndTime > nStartTime ? dEnd-dStart : new Date(dEnd.getTime()+1000*60*60*24)-dStart;
+
+                nTimeParts=nMinus/(1000*60*30)+1;
+
+                $('<span>',{
+                    'text':oCbLi.name
+                }).appendTo(jQcbNameLi);
+
+                for(var k=0;k<nTimeParts;k++){
+
+                    var dTime=new Date(dStart.getTime()+k*(1000*60*30)),
+                            sHour=dTime.getHours()+'',
+                            sHour=sHour.length>1 ? sHour:'0'+sHour,
+                            sMinutes=dTime.getMinutes(),
+                            sMinutes=sMinutes==0 ? sMinutes+'0' : sMinutes;
+
+
+//                console.log(sHour+':'+sMinutes);
+
+                    $('<li>',{
+                        'text':sHour+':'+sMinutes
+                    }).appendTo(jQcbTimeUL);
+                }
+                jQcbNameLi.append(jQcbTimeUL);
+                jQcbNameLi.appendTo(addBook.jQcbsjList);
+                addBook.jQcbsjListLi=$('>li',addBook.jQcbsjList);
+
+            }
+
+//        $('#cbsjList').scroller('destroy').scroller({
+            addBook.jQcbsjList.scroller({
+                preset: 'list', display: "inline", theme: "android-ics", mode: "mixed"
+//            ,preset: "datetime"
+//            ,stepMinute: 5
+//            ,setText: '确定'
+//            ,cancelText: '取消'
+                , labels: ['Region', 'Country','test']
+                ,onSelect:function(valueText){
+//
+                },
+                onChange:function(valueText){
+//
+                }
+                ,formatResult:function(data){
+                    var jQcbsjList=addBook.jQcbsjListLi,
+                            sArriveTime=$('li',jQcbsjList.eq(data[0])).eq(data[1]).text(), // 到达时间
+                            sBusinessHoursId=jQcbsjList.eq(data[0]).attr('typeid'); //就餐时段
+
+                    $('#businessHoursId').val(sBusinessHoursId);
+                    $('#arriveTime').val(sArriveTime);
+                    $('#detailTime').text(sArriveTime);
+
+                    app.book.arriveTime=sArriveTime;
+                    app.book.businessHoursId=sBusinessHoursId;
+                    return data;
+                }
+            });
+
+            app.showPage('wrapperAddbook');
+            /*var myScroll;
+             if(!myScroll){
+             function loaded() {
+
+             myScroll = new iScroll('wrapperAddbook',{
+             hideScrollbar:true
+             ,bounce:false
+             ,useTransform:false
+             ,checkDOMChanges:true
+
+             });
+
+             myScroll.refresh();
+             }
+
+             setTimeout(loaded,0);
+
+
+             }else{
+             myScroll.refresh();
+
+             }*/
+        }
+    });
+}
+
+
+
+
+
+//桌台类型选择
+addBook.jQnumber.scroller({
+    preset: 'select', display: "inline", theme: "android-ics", mode: "mixed",
+    onSelect:function(valueText){
+
+    },
+    onChange:function(valueText){
+
+    }
+
+});
+
+// 桌台类型下拉框 change 事件
+addBook.jQnumber.on('change',function(){
+    var sNumber=$(':selected',$(this)).text();
+    var sNumberVal=$(this).val();
+
+    $('#detailTable').text(sNumber);
+    app.book.number=sNumberVal;
+}).trigger('change');
+
+
+
+/***********************  提交预订查询  ***************************/
+function submitAddBook(){
+
+    app.showLoad('桌台搜索中...','load');
+
+    var sFromData=$('form').serialize();
+
+    $.ajax({
+        type:'post'
+        ,url:'http://192.168.1.10/cloud/API/GetIdleTableList'
+        ,dataType:'json'
+        ,crossDomain: true
+        ,cahche:false
+        ,data:sFromData+'&groupId='+app.groupId+'&branchId='+app.branchId
+        ,success:function(oIdleTableList){
+
+            if(oIdleTableList&&oIdleTableList.table.length>0){
+                app.idleList=oIdleTableList;
+                app.modifyLoad('搜索成功','info',function(){
+                    location.hash='idleTableList';
+                });
+
+            }else{
+                app.modifyLoad('没有搜到相应客位,请重试.','info');
+            }
+
+            console.log('空闲桌台',oIdleTableList);
+        }
+        ,error:function(){
+            app.modifyLoad('服务器出错,请重试.','info');
+        }
+    });
+}
+
+// 提交预订查询
+$('#btnSearchMixi').on('click',function(){
+    submitAddBook();
+    return false;
+});
+
+
+</script>

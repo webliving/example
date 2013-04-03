@@ -1,0 +1,116 @@
+<div id="bookSure" class="uiPage ui-page-hidden">
+<style type="text/css">
+#wrapperBookSure,#conBookSure{
+    background-color: #F5F2EE !important;
+}
+.tips{
+    padding: 1em;
+    border-bottom: 1px solid #DEDBD6;
+}
+.bookDetail{
+    padding: 1em;
+    margin-bottom: 1.2em;
+    border: 1px solid #DEDBD6;
+    background: #fff;
+}
+.bookDetail div{
+    color: #B5B5B5;
+}
+</style>
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>预订确认</h1>
+            </div>
+
+            <div class="navRight">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperBookSure">
+        <div class="tips">
+            您已选择
+        </div>
+        <div class="content insetContent" id="conBookSure">
+            <div>
+                <div class="bookDetail">
+
+                </div>
+                <a id="btnBookSure" class="btn btn100P tc_btn">确定预订</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!--桌台模板-->
+    <script type="text/template" id="tempTableDetail">
+        <p><%- branchName %></p>
+        <div>
+            <span><%- bookDate %></span>
+            <span><%- selDay %></span>
+            <span><%- arriveTime %></span>
+            <span><%- tableName %></span>
+        </div>
+    </script>
+    <!--桌台模板-->
+
+    <script>
+var bookSure={
+    // 餐厅列表模板
+    tempTableList:_.template( $('#tempTableDetail').html())
+
+};
+
+var oTableDetail= $.extend({},{
+    branchName:app.branchName,
+    tableName:app.tableName,
+    selDay:app.selDay
+},app.book);
+var sTableDetail=bookSure.tempTableList(oTableDetail);
+$('.bookDetail').empty().append(sTableDetail);
+
+
+$('#btnBookSure').on('click',function(){
+
+    app.showLoad('正在提交...','load');
+
+    $.ajax({
+        type:'post'
+        ,url:'http://192.168.1.10/cloud/API/CreateBook'
+        ,dataType:'json'
+        ,crossDomain: true
+        ,cahche:false
+        ,data:app.book
+        ,success:function(oIdleTableList){
+
+            if(oIdleTableList){
+//                app.idleList=oIdleTableList;
+                app.modifyLoad('预订成功','info',function(){
+                    location.hash='myBook';
+                });
+
+            }else{
+//                app.modifyLoad('加载失败,请重试.');
+            }
+
+        }
+        ,error:function(){
+//            app.modifyLoad('服务器出错,请重试.','info');
+        }
+    });
+})
+    </script>
+</div>
+
+
+
+

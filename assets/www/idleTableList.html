@@ -1,0 +1,150 @@
+<div id="idleTableList" class="uiPage ui-page-hidden">
+<style type="text/css">
+
+.list li span{
+    font-size: 0.8em;
+    color: #B5B5B5;
+}
+</style>
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>请选择客位</h1>
+            </div>
+
+            <div class="navRight">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperIdleTableList">
+        <div class="topTabs" id="tableCategory">
+
+        </div>
+        <div class="content" id="conIdleTableList">
+            <div id="categoryTableListDiv">
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--桌台模板-->
+    <script type="text/template" id="tempTableList">
+        <li>
+            <a href="#bookSure" tableid="<%- id %>">
+                <p><%- name %></p>
+                <span>可容纳 4 人</span>
+            </a>
+        </li>
+    </script>
+    <!--桌台模板-->
+
+    <script>
+
+var idleTableList={
+    // 餐厅列表模板
+    tempTableList:_.template( $('#tempTableList').html()),
+    jQcategoryTableListDiv:$('#categoryTableListDiv')
+};
+
+        function getIdleTableCategory(){
+
+            
+            var oIdleList=app.idleList,
+                aCategory=oIdleList.category,
+                jQCategoryList=$('<ul>');
+
+            for(var i= 0,k=aCategory.length;i<=k;i++){
+                var oCategory= i !=0 ? aCategory[i-1] : {id:0,name:'全部'};
+
+                
+                $('<li>',{
+                    'text':oCategory.name
+                    ,'class':i==0 ? 'curCategory':''
+                    ,'click':function(){
+                        $('li',jQCategoryList).removeClass('curCategory');
+                        $(this).addClass('curCategory');
+
+                        var sCategoryId=$(this).data('id');
+                        getCategoryTable(sCategoryId);
+
+                    }
+                }).data('id',oCategory.id).appendTo(jQCategoryList);
+
+            }
+
+            jQCategoryList.appendTo($('#tableCategory'));
+            getCategoryTable(0);
+
+        }
+
+
+
+        function getCategoryTable(sCategoryId){
+            var aAllTable=app.idleList.table,
+                jQCategoryTableList=$('<ul>',{
+                    'class':'list'
+                });
+
+            if(sCategoryId!=0){
+                aCategoryIdle= _.filter(aAllTable,function(oTable){
+
+                    return oTable.categoryId==sCategoryId;
+                });
+            }else{
+                aCategoryIdle=aAllTable;
+            }
+
+            for(var i=0;i<aCategoryIdle.length;i++){
+                var oTable=aCategoryIdle[i];
+//                var jQLi=$(idleTableList.tempTableList(oTable)).data('tableid',oTable.id);
+                var jQLi=idleTableList.tempTableList(oTable);
+
+                jQCategoryTableList.append(jQLi);
+            }
+
+            $('a',jQCategoryTableList).on('click',function(){
+                app.book.tableIds=$(this).attr('tableid');
+                app.tableName=$('p',this).text();
+
+            });
+
+            idleTableList.jQcategoryTableListDiv.empty().append(jQCategoryTableList);
+
+            if(!myScroll){
+
+                var myScroll;
+                function loaded() {
+
+                    myScroll = new iScroll('conIdleTableList',{
+                        hideScrollbar:true
+                        ,checkDOMChanges:true
+                        //                    ,bounceLock:true
+                        //                    ,useTransition:true
+                        //                    fadeScrollbar:true
+                    });
+                }
+
+                setTimeout(loaded, 0);
+            }else{
+                myScroll.refresh();
+            }
+
+            app.showPage('wrapperIdleTableList');
+        }
+    </script>
+</div>
+
+
+
+

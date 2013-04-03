@@ -1,0 +1,115 @@
+<div id="resList" class="uiPage ui-page-hidden">
+    <!--餐厅列表-->
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>餐厅列表</h1>
+            </div>
+            <div class="navRight">
+
+            </div>
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <!--列表模板-->
+    <script type="text/template" id="tempResList">
+        <li>
+            <a baranchid="<%- id %>">
+                <p><%- name %></p>
+                <div><%- address %></div>
+            </a>
+        </li>
+    </script>
+    <!--列表模板 end -->
+
+    <div class="wrapper wrapperBottom0" id="wrapperResList">
+
+        <div id="conResList" class="content insetContent">
+
+        </div>
+    </div>
+</div>
+
+<script id="jsresList">
+    // 餐厅列表模板
+    tempResList=_.template( $('#tempResList').html());
+
+    $.ajax({
+        type:'get'
+        ,url:'http://192.168.1.10/cloud/API/GetBranchesByGroupId?groupId=3'
+        ,dataType:'json'
+        ,crossDomain: true
+        ,cache:false // 不缓存
+//        ,jsonp:callbackFunction
+//        ,jsonpCallback: 'callbackFunction'
+//            ,data:sRegData
+        ,success:function(data){
+            var oResList=data.data,
+//                    tempResList=app.tempResList(),
+                    jQResList=$('<ul/>',{
+                        'class':'list'
+                    });
+
+            for(var i= 0,k=oResList.length;i<k;i++){
+                var sLi=tempResList(oResList[i]);
+                jQResList.append(sLi);
+            }
+            $('#conResList').empty().append(jQResList);
+            $('a',jQResList).on('click',function(){
+                var sBranchid=$(this).attr('baranchid'),
+                    sBranchName=$('p',this).text();
+
+                // 门店 id 持久化
+                app.branchId=sBranchid;
+                app.book.branchId=sBranchid;
+                localStorage.setItem('branchId',sBranchid);
+
+                // 门店 名称 持久化
+                app.branchName=sBranchName;
+                localStorage.setItem('branchName',sBranchName);
+
+                $('#resName').text(sBranchName);
+
+                // 转向首页
+                location.hash='';
+            });
+
+
+            if(!myScroll){
+
+                var myScroll;
+                function loaded() {
+
+                    myScroll = new iScroll('wrapperResList',{
+                        hideScrollbar:true
+//                    ,bounceLock:true
+//                    ,useTransition:true
+//                    fadeScrollbar:true
+                    });
+
+                }
+
+                setTimeout(loaded, 0);
+
+            }else{
+                myScroll.refresh();
+            }
+
+            console.log('获取列表成功');
+
+            // 获取列表成功其它操作...
+
+
+
+        }
+        ,error:function(err){
+            console.log('注册失败');
+        }
+    });
+</script>

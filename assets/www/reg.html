@@ -1,0 +1,153 @@
+<div id="reg"  class="uiPage ui-page-hidden">
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>注册</h1>
+            </div>
+            <div class="navRight">
+
+            </div>
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperReg">
+
+        <div class="content insetContent">
+            <form id="fmReg" style="margin-bottom: 1.2em;">
+                <ul class="list listForm">
+                    <li>
+                        <input name="phone" id="phone" type="number" placeholder="手机号" />
+                    </li>
+
+
+                    <li>
+                        <input name="pwd" id="pwd" type="password" placeholder="密码" />
+                    </li>
+
+                    <li>
+                        <input name="pwd2" id="pwd2" type="password" placeholder="确认密码" />
+                    </li>
+
+                </ul>
+
+                <a id="btnGetCode" class="btn btn100P tc_btn">获取验证码</a>
+
+                <div id="sendVerCode" style="margin: 20px;text-align: center;display: none;">验证码已发送,等待接收<span id="vercodeCount" style="color: #D02C2B">0</span>秒
+                    <div style="margin: 10px;"><input name="vercode" id="vercode" /></div>
+                    <a id="" class="btn tc_btn">重发</a>
+                </div>
+
+                <a style="margin-top: 20px;" id="btnReg" class="btn btn100P tc_btn">注册</a>
+
+            </form>
+
+            <div style="text-align: center;">我已阅读并同意<a href="#agreement">用户协议</a></div>
+        </div>
+    </div>
+</div>
+<script id="jsreg">
+
+var regPage={
+    $Phone:$('#phone')
+    ,$Pwd1:$('#pwd')
+    ,$Pwd2:$('#pwd2')
+    ,$vercode:$('#vercode')
+};
+    /**
+     * 获取验证码
+     */
+
+    $('#btnGetCode').on('click',function(){
+
+        var nPhone=regPage.$Phone.val(),
+            nPwd1=regPage.$Pwd1.val(),
+            nPwd2=regPage.$Pwd2.val(),
+                nCode=rndNum(4); // 随机4位数
+
+
+        if(!nPhone){
+            alert('请填写手机号');
+            return false;
+        }else if(!nPwd1||!nPwd2||nPwd1!=nPwd2){
+            alert('填写的密码不一致');
+            return false;
+        }
+
+        vercodeCount();
+        $('#sendVerCode').slideDown();
+
+        $.ajax({
+         type:'post'
+         ,url:'http://192.168.1.10/cloud/API/GetValidation'
+         ,dataType:'json'
+         ,crossDomain: true
+         ,data:'phone='+nPhone+'&code='+nCode
+         ,success:function(data){
+         console.log(data.Result);
+         if(!data.Result){
+
+         //  navigator.notification.activityStart('提示','发送成功');
+         //  setTimeout(navigator.notification.activityStop,1200);
+         console.log('发送验证码成功');
+
+
+         }
+
+         }
+         ,error:function(err){
+         console.log('失败');
+         }
+         });
+
+    });
+
+    // 注册帐户
+    $('#btnReg').on('click',function(){
+        var nCode=regPage.$vercode.val();
+
+        if(!nCode){
+            alert('请先填写手机号,获取验证码');
+            return false;
+        }
+
+        var sRegData=$('#fmReg').serialize();
+
+        $.ajax({
+            type:'post'
+            ,url:'http://192.168.1.10/cloud/API/Register'
+            ,dataType:'json'
+            ,crossDomain: true
+//        ,jsonp:callbackFunction
+//        ,jsonpCallback: 'callbackFunction'
+            ,data:sRegData
+            ,success:function(data){
+                console.log(data);
+                console.log(data.id);
+                if(!data.id){
+
+                    console.log('注册成功');
+
+
+                    // 持久到本地存储
+                    app.book.memberId=data.id;
+                    app.memberId=data.id;
+                    localStorage.setItem('memberId',data.id);
+                    location.hash=''
+
+                }
+
+            }
+            ,error:function(err){
+                console.log('注册失败');
+            }
+        });
+
+    });
+
+</script>

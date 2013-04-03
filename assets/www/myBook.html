@@ -1,0 +1,262 @@
+<div id="myBook" class="uiPage ui-page-hidden">
+<style type="text/css">
+#wrapperBookSure,#conBookSure{
+    background-color: #F5F2EE !important;
+}
+.tips{
+    padding: 1em;
+    border-bottom: 1px solid #DEDBD6;
+}
+.bookDetail{
+    padding: 1em;
+    margin-bottom: 1.2em;
+    border: 1px solid #DEDBD6;
+    background: #fff;
+}
+.bookDetail div{
+    color: #B5B5B5;
+}
+</style>
+    <!--页眉-->
+    <div class="header">
+
+        <div>
+            <a class="navLeft" onclick="history.back();"><i class="icon-angle-left"></i></a>
+
+            <div>
+                <h1>我的预订</h1>
+            </div>
+
+            <div class="navRight">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperMyBook">
+
+        <!--选项卡-->
+        <div class="topTabs" id="tabMyBook">
+            <ul>
+                <li class="curCategory">全部</li>
+                <li class="">已预定</li>
+                <li class="">已签到</li>
+                <li class="">已取消</li>
+            </ul>
+        </div>
+        <!--选项卡-->
+
+        <div class="content" id="conMyBook">
+            <div id="myBookListDiv">
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--桌台模板-->
+    <script type="text/template" id="tempMyBookList">
+        <!--<li>-->
+            <a href="#qiandao">
+                <span><%- bookDate %></span>
+            </a>
+        <!--</li>-->
+    </script>
+    <!--桌台模板-->
+
+    <!--桌台模板-->
+    <script type="text/template" id="tempTableDetail">
+        <p><%- branchName %></p>
+        <div>
+            <span><%- bookDate %></span>
+            <span><%- selDay %></span>
+            <span><%- arriveTime %></span>
+            <span><%- tableName %></span>
+        </div>
+    </script>
+    <!--桌台模板-->
+
+<script>
+
+    var myBook={
+        // 我的预订列表模板
+//        tempMyBook:_.template( $('#tempMyBookList').html()),
+        jQmyBookListDiv:$('#myBookListDiv')
+    };
+
+    // 预订模型
+    app.ModMyBook = Backbone.Model.extend({
+        idAttribute:'id'
+        ,defaults: {
+//            Id: '',
+//            Name: ''
+        }
+        ,toggle: function() {
+            this.save({
+                completed: !this.get('completed')
+            });
+        }
+    });
+
+    // 预订项视图
+    app.ViewMyBookList = Backbone.View.extend({
+        tagName:  'li',
+        renderData:_.template( $('#tempMyBookList').html()),
+        render: function() {
+
+//            console.log('render',this.model);
+//			this.$el.html(Mustache.to_html(this.template,this.model.toJSON()));
+            // underscore tmpl
+            this.$el.html( this.renderData( this.model.toJSON()));
+//            this.$el.toggleClass( 'completed', this.model.get('completed') );
+
+//            this.toggleVisible();
+//            this.input = this.$('.edit');
+            return this;
+        }
+    });
+
+
+    // 预订视图
+    app.ViewMyBook = Backbone.View.extend({
+
+        el:'#tabMyBook'
+        ,events: {
+            /*'keypress #new-todo': 'createOnEnter',
+             'click #clear-completed': 'clearCompleted',
+             'click #toggle-all': 'toggleAllComplete'*/
+        }
+        ,initialize: function() {
+
+            this.$bookList=$('#myBookListDiv');
+
+            // 向集合添加一条数据触发
+//            app.colMyBook.on( 'add', this.addOne, this );
+            // 数据在成功同步到集合中之后，会触发reset事件
+            app.colMyBook.on( 'reset', this.addAll, this );
+
+        }
+        /*,addOne:function(a){
+            console.log(a);
+        }*/
+        ,addAll: function() {
+
+            this.$bookList.html('');
+
+            var bookList=$('<ul/>',{
+                'class':'list'
+            });
+
+            app.colMyBook.each(function(modDish){
+//                console.log(modDish);
+//                modDish.set('absImgUrl',sHost+'/cloud/images/dish/'+app.groupId+'/m_'+modDish.get('image'));
+                var view = new app.ViewMyBookList({ model: modDish });
+                bookList.append(view.render().el);
+            },this);
+
+            bookList.appendTo(this.$bookList);
+        }
+    });
+
+    var ColMyBook = Backbone.Collection.extend({
+        model:app.ModMyBook
+//        ,localStorage: new Store('myBook')
+    });
+
+
+
+
+
+
+//    app.colMyMenu.create({Id:4,Name:'红泥茶香饼'});
+
+/*var oTableDetail= $.extend({},{
+    branchName:app.branchName,
+    tableName:app.tableName,
+    selDay:app.selDay
+},app.book);
+
+console.log('我的预订',oTableDetail);
+var sTableDetail=myBook.tempTableList(oTableDetail);*/
+//$('#myBookListDiv').empty().append(sTableDetail);
+
+
+$.ajax({
+    type:'post'
+    ,url:'http://192.168.1.10/cloud/API/GetBookListByMemberIdAndState'
+    ,dataType:'json'
+    ,crossDomain: true
+    ,cahche:false
+    ,data:'memberId='+app.memberId+'&state=0&page=1&size=2000'
+    ,success:function(oMyBook){
+        if(oMyBook){
+//            console.log(oMyBook);
+
+            // 我的预订集合
+            app.colMyBook=new ColMyBook();
+            new app.ViewMyBook();
+
+            // 移除旧的数据
+            app.colMyBook.remove(app.colMyBook.models);
+            // 集合添加新数据
+            app.colMyBook.add(oMyBook.data);
+
+            // 触发 "reset" 事件
+            app.colMyBook.trigger('reset');
+
+            /*var oIdleList=app.idleList,
+                    aCategory=oIdleList.category,
+                    jQCategoryList=$('<ul>');
+
+            for(var i= 0,k=aCategory.length;i<=k;i++){
+                var oCategory= i !=0 ? aCategory[i-1] : {id:0,name:'全部'};
+
+
+                $('<li>',{
+                    'text':oCategory.name
+                    ,'class':i==0 ? 'curCategory':''
+                    ,'click':function(){
+                        $('li',jQCategoryList).removeClass('curCategory');
+                        $(this).addClass('curCategory');
+
+                        var sCategoryId=$(this).data('id');
+                        getCategoryTable(sCategoryId);
+
+                    }
+                }).data('id',oCategory.id).appendTo(jQCategoryList);
+
+            }
+
+            jQCategoryList.appendTo($('#tableCategory'));
+            getCategoryTable(0);*/
+
+//                app.idleList=oIdleTableList;
+//            app.modifyLoad('预订成功','info',function(){
+//                    location.hash='idleTableList';
+//            });
+
+        }else{
+//                app.modifyLoad('加载失败,请重试.');
+        }
+
+    }
+    ,error:function(){
+//            app.modifyLoad('服务器出错,请重试.','info');
+    }
+});
+/*$('#btnBookSure').on('click',function(){
+
+    app.showLoad('正在提交...','load');
+
+
+})*/
+    </script>
+</div>
+
+
+
+

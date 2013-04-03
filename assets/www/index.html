@@ -1,152 +1,423 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!--device-->
-        <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!--device medium-->
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=medium-height" />-->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height,target-densitydpi=medium-dpi" />
 
-        <title>Hello World</title>
+    <title>Hello World</title>
 
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" type="text/css" href="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.css"/>
-        <script type="text/javascript" src="js/lib/jquery-mobile/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="js/mobile/custom.js"></script>
-        <script type="text/javascript" src="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.js"></script>
-        <script type="text/javascript" src="js/lib/iscroll/iscroll.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.css" />-->
 
-        <script type="text/javascript">
-            var myScroll;
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <!--<link rel="stylesheet" media="screen and (-webkit-device-pixel-ratio: 0.75)" href="css/ldpi.css" />-->
+    <!--<link rel="stylesheet" media="screen and (-webkit-device-pixel-ratio: 1.0)" href="css/mdpi.css" />-->
+    <!--<link rel="stylesheet" media="screen and (-webkit-device-pixel-ratio: 1.5)" href="css/hdpi.css" />-->
 
-            function loaded() {
-                myScroll = new iScroll('wrapper', {
-                    snap: true,
-                    momentum: false,
-                    hScrollbar: false,
-                    onScrollEnd: function () {
-                        document.querySelector('#indicator > li.active').className = '';
-                        document.querySelector('#indicator > li:nth-child(' + (this.currPageX+1) + ')').className = 'active';
-                    }
-                });
-            }
+    <script type="text/javascript" src="js/lib/jquery-mobile/jquery-1.9.1.min.js"></script>
+    <!--<script type="text/javascript" src="js/jqm/custom.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/jquery-mobile/zepto.min.js"></script>-->
+    <script type="text/javascript" src="js/lib/iscroll/iscroll.js"></script>
+    <style type="text/css">
 
-//            document.addEventListener('DOMContentLoaded', loaded, false);
-        </script>
-    </head>
-    <body>
+        /*提示框*/
+        #info{
+            position: absolute;z-index:6000;top:0;bottom:0;width: 100%;height: 100%;display: none;
+        }
+        #info>div{
+            display: table-cell;vertical-align:middle;text-align: center;
+        }
+        #info>div>div{
+            display:inline-block;background-color:#afa993;padding: 0.3em;width: auto;border-radius: 3px;
+        }
+        #infoIcon{
+            position: relative;z-index: 2000;color: #f5fffa;
+        }
+        #infoText{
+            padding-left: 0.2em;color: #4F5468;
+        }
 
-    <div data-role="page" id="home">
+        /*确认操作框*/
+        #operator{
+            position: absolute;z-index:6000;top:0;bottom:0;width: 100%;height: 100%;display: none;
+        }
+        #operator>div{
+            display: table-cell;vertical-align:middle;text-align: center;
+        }
+        #operator>div>div{
+            display:inline-block;background-color:#F1EEE9;padding: 0.7em;width: auto;border-radius: 3px;
+        }
 
-        <div data-role="header" data-position="fixed">
-            合肥
-            <div data-role="fieldcontain" style="float: right;">
-         
-         <input type="search" data-mini="true" data-theme="b" name="search-9" id="search-9" value="">
-        </div>
-           <!--<div style="float: right;"> <input data-inline="true" data-theme="b" type="search" name="search-5" id="search-5" value="" placeholder="Placeholder"></div>-->
+        #operText{
+            display: block;
+            padding-bottom: 1em;
+        }
+        .btnDialog{
+            display: inline-block;
+            padding: 0.3em 0.5em;
+            border: 1px solid #DCD6C4;
+            color: #B29168;
+            background-color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
 
+<!--首页-->
+<div id="home" class="uiPage ui-page-active">
+
+    <!--页眉-->
+    <div id="header" class="header">
+        <div>
+            <div>
+                <h1>烹烹</h1>
+            </div>
         </div>
-        <!--content-->
-        <div id="content" data-role="content" style="position: relative;">
+    </div>
+    <!--页眉 end-->
 
-            <div class="app">
-                <h1>Apache Cordova</h1>
-                <div id="deviceready" class="blink">
-                    <p class="event listening">Connecting to Device</p>
-                    <p class="event received">Device is Ready</p>
-                </div>
+
+    <!--content-->
+    <div class="wrapper" id="wrapperIndex">
+        <div class="content" id="conHome" data-role="content">
+
+            <!--切换门店-->
+            <div id="hotelName">
+                <p style="text-align: right;" class="tc_name"><i class="icon-heart"></i><span id="resName">红泥小厨河瓦路店</span></p>
+                <p style="text-align: left;"><a href="#resList" id="btnCgHotel"><i class="icon-map-marker"></i> 更换</a></p>
             </div>
 
-            <ul data-role="listview" data-dividertheme="d" style="margin-top: 0;">
-                <li data-role="list-divider">列表头 1</li>
-                <li><a href="test/iscroll/index.html" data-ajax="false">pull-to-refresh</a></li>
-                <li><a href="#" onclick="beep();">通知音</a></li>
-                <li><a href="camera.html">相机</a></li>
-                <li><a href="#" onclick="show_pic();">拍照</a></li>
-                <li><a href="#" onclick="get_contacts();">获取联系人</a></li>
-                <li><a href="#" onclick="createContacts();">创建联系人</a></li>
-                <li data-role="list-divider">列表头 2</li>
-                <li><a href="jquery.html" data-ajax="false">jquery.html</a></li>
-                <li><a href="jquery2.html">jquery2.html</a></li>
-                <li><a href="test/backbone/backbone.html" data-ajax="false">backbone</a></li>
-                <li><a href="test/db.html">websql</a></li>
-                <li><a href="test/css3/animation.html" data-ajax="false">websql</a></li>
-            </ul>
+            <!--切换门店 end-->
 
-            <div id="viewport"></div>
-            <img id="test_img" src="" />
-            <div id="h"></div>
-            <ul>
-                <li id="platform"></li>
-                <li id="version"></li>
-                <li id="uuid"></li>
-                <li id="name"></li>
-                <li id="width"></li>
-                <li id="height"></li>
-                <li id="colorDepth"></li>
-            </ul>
-            <div id="contact">
+            <div id="wrapperTop">
+                <div id="scrollerTop">
+                    <ul>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_01.png" /></a>
+                        </li>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_02.jpg" /></a>
+                        </li>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_01.png" /></a>
+                        </li>
 
-            </div>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_02.jpg" /></a>
+                        </li>
 
-            <!--<div id="wrapper">
-                <div id="scroller">
-                    <ul id="thelist">
-                        <li><strong>1.</strong> <em>A robot may not injure a human being or, through inaction, allow a human being to come to harm.</em></li>
-                        <li><strong>2.</strong> <em>A robot must obey any orders given to it by human beings, except where such orders would conflict with the First Law.</em></li>
-                        <li><strong>3.</strong> <em>A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.</em></li>
-                        <li><strong>Zeroth Law:</strong> <em>A robot may not harm humanity, or, by inaction, allow humanity to come to harm.</em></li>
-                        <li><strong>Lyuben Dilov's Forth law:</strong> <em>A robot must establish its identity as a robot in all cases.</em></li>
-                        <li><strong>Harry Harrison's Forth law:</strong> <em>A robot must reproduce. As long as such reproduction does not interfere with the First or Second or Third Law.</em></li>
-                        <li><strong>Nikola Kesarovski's Fifth law:</strong> <em>A robot must know it is a robot.</em></li>
+
                     </ul>
                 </div>
-            </div>
-            <div id="nav">
-                <div id="prev" onclick="myScroll.scrollToPage('prev', 0);return false">&larr; prev</div>
-                <ul id="indicator">
-                    <li class="active">1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                </ul>
-                <div id="next" onclick="myScroll.scrollToPage('next', 0);return false">next &rarr;</div>
-            </div>-->
 
-            <div class="div" style="width: 100%;background-color: #ff9234;position: relative;">
-                <ul>
-                    <li>CSS参考手册_</li>
-                    <li>CSS参考手册_</li>
-                    <li>CSS参考手册_</li>
-                    <li>CSS参考手册_</li>
-                </ul>
+                <div id="nav">
+                    <!--<div id="prev" onclick="myScrollTop.scrollToPage('prev', 0);return false">&larr; prev</div>-->
+                    <ul id="indicator2">
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <!--<div id="next" onclick="myScrollTop.scrollToPage('next', 0);return false">next &rarr;</div>-->
+                </div>
             </div>
+
+
+
+            <!--<div style="float: right;clear: both;"> <input data-inline="true" data-theme="b" type="search" name="search-5" id="search-5" value="" placeholder="Placeholder"></div>
+
+            <ul id="functionGroup" data-shadow="false" data-role="none" data-inset="true" style="margin-top: 30px;clear: both;">
+                <li><a class="functionIndex" href="#">摇一摇<span>找美食,快速又好玩</span></a></li>
+                <li><a class="functionIndex" href="#">会员卡<span>随时随地VIP</span></a></li>
+                <li><a class="functionIndex" href="#">搜全城<span>按商区查询,找遍每个角落</span></a></li>
+                <li><a class="functionIndex" href="#">排行榜<span>找美食,快速又好玩</span></a></li>
+                <li><a class="functionIndex" href="#">优惠劵<span>免费使用,省钱法宝</span></a></li>
+            </ul>-->
+
+
+
+
+
+            <!--<label for="text-basic">Text input:</label>
+            <input type="text" name="text-basic" id="text-basic" value="">
+
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="search" value=""></div>
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="s" value=""></div>
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="d" value=""></div>-->
+
 
         </div>
-
-        <!--footer-->
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#find" data-icon="search" data-transition="none">查找</a></li>
-                    <li><a href="#" data-icon="grid" data-transition="none">团购</a></li>
-                    <li><a href="#orders" data-icon="check" data-transition="none">签到</a></li>
-                    <li><a href="#" data-icon="star">我的</a></li>
-                    <li><a href="#" data-icon="gear">更多</a></li>
-                </ul>
-            </div>
-        </div>
-        <script src="js/mobile/home.js"></script>
 
     </div>
 
-        <script type="text/javascript" src="js/lib/phonegap/cordova-2.5.0.js"></script>
+    <!--footer-->
+    <div class="footerIndex">
+        <ul class="footerNav">
+            <li>
+                <a href="#orderfood">
+                    <span class="icoTop">
+                        <span>
+                            <i class="icon-food"></i>
+                        </span>
+                    </span>
+                    <!--<span class="cus-ui-icon ui-icon-index1"></span>-->
+                    <p>点餐</p>
+                </a>
+            </li>
 
-        <script type="text/javascript" src="js/index.js"></script>
+            <li>
+                <a href="#addbook">
+                    <span class="icoTop">
+                            <i class="icon-calendar"></i>
+                    </span>
+                    <!--<span class="cus-ui-icon ui-icon-index2"></span>-->
+                    <p>预订</p>
+                </a>
+            </li>
 
-    </body>
+            <li>
+                <a href="#login">
+                    <span class="icoTop">
+                        <i class="icon-flag"></i>
+                    </span>
+                    <!--<span class="cus-ui-icon ui-icon-index2"></span>-->
+                    <p>排队</p>
+                </a>
+            </li>
+            <li>
+                <a href="#profile">
+                    <span class="icoTop">
+                        <i class="icon-user"></i>
+                    </span>
+                    <!--<span class="cus-ui-icon ui-icon-index1"></span>-->
+                    <p>帐户</p>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</div>
+
+<style type="text/css">
+
+@-webkit-keyframes center{
+    from{
+        -webkit-transform:translateY(0);
+        /*opacity: 0;*/
+    }
+    to{
+        -webkit-transform:translateY(-200%);
+        /*opacity: 1;*/
+    }
+}
+
+.center.end{
+    -webkit-transform:translateY(-200%);
+    /*opacity: 1 !important;*/
+}
+@-webkit-keyframes two{
+    from{
+        -webkit-transform:translateY(0);
+        /*opacity: 0;*/
+    }
+    to{
+        -webkit-transform:translateY(-180%);
+        /*opacity: 1;*/
+    }
+}
+.two.end{
+    -webkit-transform:translateY(-180%);
+    /*opacity: 1 !important;*/
+}
+@-webkit-keyframes one{
+    from{
+        -webkit-transform:translateY(0);
+        /*opacity: 0;*/
+    }
+    to{
+        -webkit-transform:translateY(-160%);
+        /*opacity: 1;*/
+    }
+}
+.one.end{
+    -webkit-transform:translateY(-160%);
+    /*opacity: 1 !important;*/
+}
+
+
+
+#qcMenu{
+    display: none;
+    position:fixed;
+    bottom:-10%;
+    width: 100%;
+    z-index: 200;
+    height: 10%;
+}
+#qcMenu ul{
+    /*display: table;*/
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.4em;
+}
+#qcMenu a{
+    text-decoration: none;
+    color: #fff;
+}
+
+#qcMenu ul li{
+    display:inline-block;
+    padding: 3%;
+    /*width:5%;*/
+    text-align: center;
+    /*display: inline-block;*/
+}
+
+#qcMenu ul li a{
+    display: block;
+    padding: 0.1em;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    background-color: #D02C2B;
+    border-radius: 0.85em;
+}
+
+.show li.center{
+    -webkit-animation:center 200ms linear 0;
+
+}
+.show li.one{
+    -webkit-animation:one 200ms linear 400ms;
+
+ }
+.show li.two{
+    -webkit-animation:two 200ms linear 200ms;
+
+
+}
+</style>
+<div id="qcMenu">
+    <ul>
+        <li class="one">
+            <a href="#orderfood">
+                <i class="icon-food"></i>
+            </a>
+        </li><li class="two">
+            <a href="#addbook">
+                <i class="icon-calendar"></i>
+            </a>
+        </li><li class="center">
+            <a href="#login">
+                <i class="icon-flag"></i>
+            </a>
+        </li><li class="two">
+            <a href="#profile">
+                <i class="icon-user"></i>
+            </a>
+        </li><li class="one">
+            <a href="#profile">
+                <i class="icon-coffee"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!--加载信息-->
+<div id="info">
+    <div>
+        <div>
+            <i id="infoIcon" class="icon-spinner icon-spin"></i>
+            <span id="infoText">客官稍等,正在努力的加载..</span>
+        </div>
+    </div>
+</div>
+<!--加载信息-->
+
+<!--操作提示-->
+<div id="operator">
+    <div>
+        <div>
+
+            <span id="operText">预订成功,您的现在需要点餐吗?</span>
+            <div>
+                <span class="btnDialog">确定</span>
+                <span class="btnDialog">取消</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--操作提示-->
+
+<!--phone 操作-->
+<script src="js/lib/phonegap/cordova-2.5.0.js"></script>
+<script src="js/phone/appPhone.js"></script>
+
+<!--mvc 框架-->
+<script src="js/lib/underscore/underscore-min.js"></script>
+<script src="js/lib/backbone/backbone-1.0.js"></script>
+<script src="js/lib/backbone/backbone-localstorage.js"></script>
+
+<!--页面功能-->
+<script src="js/jqm/home.js"></script>
+<!--<link href="css/mobi/mobiscroll.custom-2.4.5.min.css" rel="stylesheet" type="text/css" />-->
+
+<!--滑动选择-->
+<script src="js/lib/mobi/mobiscroll.custom-2.4.5.min.js"></script>
+<!--<script src="js/lib/hammer/hammer.min.js"></script>-->
+<script src="js/lib/hammer/jquery.hammer.min.js"></script>
+<!--<script src="js/lib/jester/jester.js"></script>-->
+<script>
+
+$('#hotelName').click(function(){
+    $('#qcMenu').css('display','block').addClass('show');
+});
+
+$('#qcMenu li').animationComplete(function(){
+
+    $(this).addClass('end');
+});
+
+
+
+    $('.footerIndex li a').on('click',function(){
+        return false;
+    });
+
+    /*Hammer($('body')).on('touch',function(){
+        console.log('body touch');
+    });*/
+
+    Hammer($('.footerIndex li a')).on("touch", function(e) {
+        $(this).parent('li').addClass('footerTap');
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+    });
+
+    Hammer($('.footerIndex li a')).on("release", function(e) {
+        $(this).parent('li').removeClass('footerTap');
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+    });
+
+    Hammer($('.footerIndex li a')).on("tap", function(e) {
+    console.log(e.target.tagName);
+        var sHash=$(this).attr('href');
+        sHash1=sHash.substring(1,sHash.length);
+//        $(this).trigger('click');
+        location.hash=sHash1;
+
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+    });
+
+</script>
+</body>
 </html>

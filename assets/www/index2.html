@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!--device-->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+
+    <title>Hello World</title>
+
+    <link rel="stylesheet" type="text/css" href="js/lib/jquery-mobile/jquery.mobile-1.3.0.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+    <script type="text/javascript" src="js/lib/jquery-mobile/jquery-1.9.1.min.js"></script>
+    <!--<script type="text/javascript" src="js/jqm/custom.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/jquery-mobile/zepto.min.js"></script>-->
+    <script type="text/javascript" src="js/lib/iscroll/iscroll.js"></script>
+
+</head>
+<body>
+
+<!--首页-->
+<div data-role="none" id="home" class="ui-page-active" style="position:absolute;top:0;width: 100%;min-height: 100%;">
+
+    <!--页眉-->
+    <div id="header" class="header">
+        <h1>烹烹</h1>
+    </div>
+    <!--页眉 end-->
+
+
+    <!--content-->
+    <div class="wrapper" id="wrapperIndex">
+        <div class="content" id="conFind" data-role="content">
+
+            <!--切换门店-->
+            <div id="hotelName" style="clear: both;">
+                <p class="tc_name">红泥小厨河瓦路店  <a id="btnCgHotel"></a></p>
+            </div>
+            <!--切换门店 end-->
+
+            <div id="wrapperTop">
+                <div id="scrollerTop">
+                    <ul>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_01.png" /></a>
+                        </li>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_02.jpg" /></a>
+                        </li>
+                        <li>
+                            <a><img src="img/adv_top/adv_top_01.png" /></a>
+                        </li>
+
+                        <li>
+                            <a><img src="img/adv_top/adv_top_02.jpg" /></a>
+                        </li>
+
+
+                    </ul>
+                </div>
+
+                <div id="nav">
+                    <!--<div id="prev" onclick="myScrollTop.scrollToPage('prev', 0);return false">&larr; prev</div>-->
+                    <ul id="indicator2">
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <!--<div id="next" onclick="myScrollTop.scrollToPage('next', 0);return false">next &rarr;</div>-->
+                </div>
+            </div>
+
+
+
+            <!--<div style="float: right;clear: both;"> <input data-inline="true" data-theme="b" type="search" name="search-5" id="search-5" value="" placeholder="Placeholder"></div>
+
+            <ul id="functionGroup" data-shadow="false" data-role="none" data-inset="true" style="margin-top: 30px;clear: both;">
+                <li><a class="functionIndex" href="#">摇一摇<span>找美食,快速又好玩</span></a></li>
+                <li><a class="functionIndex" href="#">会员卡<span>随时随地VIP</span></a></li>
+                <li><a class="functionIndex" href="#">搜全城<span>按商区查询,找遍每个角落</span></a></li>
+                <li><a class="functionIndex" href="#">排行榜<span>找美食,快速又好玩</span></a></li>
+                <li><a class="functionIndex" href="#">优惠劵<span>免费使用,省钱法宝</span></a></li>
+            </ul>-->
+
+
+
+
+
+            <!--<label for="text-basic">Text input:</label>
+            <input type="text" name="text-basic" id="text-basic" value="">
+
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="search" value=""></div>
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="s" value=""></div>
+            <div><input type="search" data-role="none" data-mini="true" data-theme="b" name="search-9" id="d" value=""></div>-->
+
+
+        </div>
+
+    </div>
+    <!--footer-->
+    <div class="footerIndex">
+        <ul class="footerNav">
+            <li>
+                <a href="#findPage">
+                    <span class="cus-ui-icon ui-icon-index1"></span>
+                    <p>点餐</p>
+                </a>
+            </li>
+
+            <li>
+                <a href="#tuangouPage">
+                    <span class="cus-ui-icon ui-icon-index2"></span>
+                    <p>预订</p>
+                </a>
+            </li>
+
+            <li>
+                <a href="#login">
+                    <span class="cus-ui-icon ui-icon-index2"></span>
+                    <p>排队</p>
+                </a>
+            </li>
+            <li>
+                <a href="#profile">
+                    <span class="cus-ui-icon ui-icon-index1"></span>
+                    <p>帐户</p>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</div>
+
+
+<!--个人中心-->
+<div class="ui-page-hidden" id="profile" style="position:absolute;top:0;width: 100%;min-height: 100%;">
+    <!--页眉-->
+    <div class="header">
+        <a onclick="history.back();" class="backHistory hover"><</a>
+        <h1>个人中心</h1>
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperProfile">
+        <div class="content insetContent contentProfile">
+            <ul class="list">
+                <li style="position: relative;">
+                    <a href="#"><p>我的帐号 <span>330572403</span></p></a>
+                    <a href="#cancel" class="btn btnCancel tc_btn" onclick="alert(200);">注销</a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>我的预订 <span class="notice noticeBook">1</span></p></a>
+                </li>
+                <li>
+                    <a href="#"><p>我的排队 <span class="notice noticeQueue">3</span></p></a>
+                </li>
+                <li>
+                    <a href="#"><p>我的菜单 <span class="notice noticeMenu">6</span></p></a>
+                </li>
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>消息中心</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+            <ul class="list">
+                <li>
+                    <a href="#"><p>设置</p></a>
+                </li>
+                <li>
+                    <a href="#"><p>关于烹烹</p></a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!--登录-->
+<div class="ui-page-hidden" id="login" style="position:absolute;top:0;width: 100%;min-height: 100%;">
+    <!--页眉-->
+    <div class="header">
+        <a onclick="history.back();" class="backHistory hover"><</a>
+        <h1>登录</h1>
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperLogin">
+
+        <div class="content insetContent">
+            <form style="margin-bottom: 1.2em;">
+                <ul class="list listForm">
+                    <li>
+                        <input name="myid" id="myid" type="text" placeholder="我的帐号" />
+                    </li>
+
+                    <li>
+                        <input name="psw" id="psw" type="text" placeholder="密码" />
+                    </li>
+
+                </ul>
+
+                <a href="#cancel" class="btn btn100P tc_btn" onclick="alert(200);">登录</a>
+            </form>
+            <a href="#forgetPSW">忘记密码</a>
+
+            <ul class="list" style="margin-top: 1.2em;">
+                <li class="noIco">
+                    <a href="#reg"><p>还没有烹烹帐号, 赶紧注册一个吧 ~</p></a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<!--注册-->
+<div class="ui-page-hidden" id="reg" style="position:absolute;top:0;width: 100%;min-height: 100%;">
+    <!--页眉-->
+    <div class="header">
+        <a onclick="history.back();" class="backHistory hover"><</a>
+        <h1>注册</h1>
+    </div>
+    <!--页眉 end-->
+
+    <div class="wrapper wrapperBottom0" id="wrapperReg">
+
+        <div class="content insetContent">
+            <form id="fmReg" style="margin-bottom: 1.2em;">
+                <ul class="list listForm">
+                    <li>
+                        <input name="myPhone" id="myPhone" type="text" placeholder="15605510809" />
+                    </li>
+
+                    <li>
+                        <input name="username" id="username" type="text" placeholder="用户名" />
+                    </li>
+
+                    <li>
+                        <input name="userpsw" id="userpsw" type="password" placeholder="密码" />
+                    </li>
+
+                    <li>
+                        <input name="userpsw2" id="userpsw2" type="password" placeholder="确认密码" />
+                    </li>
+
+                </ul>
+
+                <a id="btnGetCode" class="btn btn100P tc_btn">获取验证码</a>
+                <a style="margin-top: 20px;" id="btnReg" class="btn btn100P tc_btn">注册</a>
+            </form>
+
+            <div style="text-align: center;">我已阅读并同意<a href="#agreement">用户协议</a></div>
+        </div>
+    </div>
+</div>
+<!--end-->
+
+
+<div data-role="none" id="searchs" class="ui-page-hidden" style="position:absolute;top:0;width: 100%;min-height: 100%;">
+    <!--<div data-role="page" id="searchs">-->
+
+    <div class="header"><a href="http://cubiq.org/iscroll">iScroll</a></div>
+
+    <div class="wrapper" id="wrapper">
+        <div class="scroller" id="scroller">
+            <ul id="thelist">
+                <li>Pretty row 1</li>
+                <li>Pretty row 2</li>
+                <li>Pretty row 3</li>
+                <li>Pretty row 4</li>
+                <li>Pretty row 5</li>
+                <li>Pretty row 6</li>
+                <li>Pretty row 7</li>
+                <li>Pretty row 8</li>
+                <li>Pretty row 9</li>
+                <li>Pretty row 10</li>
+                <li>Pretty row 11</li>
+                <li>Pretty row 12</li>
+                <li>Pretty row 13</li>
+                <li>Pretty row 14</li>
+                <li>Pretty row 15</li>
+                <li>Pretty row 16</li>
+                <li>Pretty row 17</li>
+                <li>Pretty row 18</li>
+                <li>Pretty row 19</li>
+                <li>Pretty row 20</li>
+                <li>Pretty row 21</li>
+                <li>Pretty row 22</li>
+                <li>Pretty row 23</li>
+                <li>Pretty row 24</li>
+                <li>Pretty row 25</li>
+                <li>Pretty row 26</li>
+                <li>Pretty row 27</li>
+                <li>Pretty row 28</li>
+                <li>Pretty row 29</li>
+                <li>Pretty row 30</li>
+                <li>Pretty row 31</li>
+                <li>Pretty row 32</li>
+                <li>Pretty row 33</li>
+                <li>Pretty row 34</li>
+                <li>Pretty row 35</li>
+                <li>Pretty row 36</li>
+                <li>Pretty row 37</li>
+                <li>Pretty row 38</li>
+                <li>Pretty row 39</li>
+                <li>Pretty row 40</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer"><a href="#qiandaoPage" data-ajax="false" data-icon="check" data-iconshadow="false">签到</a></div>
+
+</div>
+
+
+
+
+<!--phone 操作-->
+<script src="js/lib/phonegap/cordova-2.5.0.js"></script>
+<script src="js/phone/appPhone.js"></script>
+
+<!--mvc 框架-->
+<script src="js/lib/underscore/underscore-min.js"></script>
+<script src="js/lib/backbone/backbone-0.9.10.js"></script>
+<!--页面功能-->
+<script src="js/jqm/home.js"></script>
+
+</body>
+</html>

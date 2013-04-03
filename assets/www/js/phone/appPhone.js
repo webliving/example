@@ -1,5 +1,5 @@
 
-var app = {
+var appPhone = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -8,6 +8,7 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        // deviceready : 当PhoneGap被完全加载后会触发该事件
         document.addEventListener('deviceready', this.onDeviceReady, false);
 
     },
@@ -21,7 +22,7 @@ var app = {
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
+    // function, we must explicity call 'appPhone.receivedEvent(...);'
     onDeviceReady: function() {
         /*$.extend($.mobile ,{
             defaultPageTransition: 'none'
@@ -36,19 +37,22 @@ var app = {
 
         document.addEventListener('offline', this.onOffline, false);
         document.addEventListener('online', this.onOnline, false);
+//        document.addEventListener("touchmove", preventBehavior, false);
+        // 返回键
+        document.addEventListener("backbutton", eventBackButton, false);
 
         var that=this;
 
-        deviceInfo();
+        // 输出设备信息
+//        deviceInfo();
         // 检测网络连接
-        checkConnection();
+//        checkConnection();
         // 检测网络类型
-        check_network();
+//        check_network();
 
-        toggleCompass();
-        // 返回键
-//        document.addEventListener("backbutton", eventBackButton, false);
-        app.receivedEvent('deviceready');
+//        toggleCompass();
+
+//        appPhone.receivedEvent('deviceready');
 
     },
     // Update DOM on a Received Event
@@ -84,9 +88,17 @@ function showAlert(button) {
 
 // 检测回退按钮
 function eventBackButton(){
-    navigator.notification.confirm('确认退出？', showConfirm, '退出软件', '确定,取消');
+
+    if($('.ui-page-active')[0].id=='home'){
+
+        navigator.notification.confirm('确认退出？', showConfirm, '退出软件', '确定,取消');
+
+    }else{
+        navigator.app.backHistory();
+    }
 }
 function showConfirm(button) {
+
     if( button==1 ) {
         document.removeEventListener("backbutton", eventBackButton, false); //注销返回键
         navigator.app.exitApp();
@@ -262,14 +274,7 @@ function toggleCompass() {
 var preventBehavior = function(e) {
     e.preventDefault();
 };
-/*
-function init() {
-    // the next line makes it impossible to see Contacts on the HTC Evo since it
-    // doesn't have a scroll button
-    // document.addEventListener("touchmove", preventBehavior, false);
-    document.addEventListener("deviceready", deviceInfo, true);
-}*/
 
 
 // 应用初始化
-app.initialize();
+appPhone.initialize();
