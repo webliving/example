@@ -17,8 +17,9 @@
     </div>
     <!--页眉 end-->
 
-    <div class="wrapper wrapperBottom0" id="wrapperProfile">
-        <div class="content insetContent contentProfile">
+    <div class="wrapper wrapperBottom0" id="wrapper-profile">
+
+        <div class="content insetContent d_n">
             <ul class="list">
                 <li style="position: relative;">
                     <a href="#"><p>我的帐号 <span>330572403</span></p></a>
@@ -86,7 +87,7 @@
         return false;
     });
 
-function addEventProfile(){
+function loadData(){
     Hammer($('.list a')).on('tap',function(){
         var sHash=$(this).attr('href');
         sHash1=sHash.substring(1,sHash.length);
@@ -94,6 +95,27 @@ function addEventProfile(){
         location.hash=sHash1;
         return false;
     });
+
+
+    if(!myScroll){
+
+     var myScroll;
+     function loaded() {
+
+     myScroll = new iScroll('wrapper-profile',{
+     hideScrollbar:true
+     //                    ,bounceLock:true
+     //                    ,useTransition:true
+     //                    fadeScrollbar:true
+     });
+     }
+
+     setTimeout(loaded, 0);
+     }else{
+     myScroll.refresh();
+     }
+
+    app.showPage('wrapper-profile');
 }
 </script>
 </div>

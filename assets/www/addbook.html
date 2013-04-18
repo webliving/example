@@ -1,7 +1,7 @@
-<div id="addbook" class="uiPage ui-page-hidden">
+<div id="addBook" class="uiPage ui-page-hidden">
 <style type="text/css">
         /*内容区域*/
-    #wrapperAddbook{
+    #wrapper-addBook{
         width: 100%;
         background-color: #ECECEC !important;
     }
@@ -122,10 +122,10 @@
     </div>
     <!--页眉 end-->
 
-    <div class="wrapper wrapperBottom0" id="wrapperAddbook">
+    <div class="wrapper wrapperBottom0" id="wrapper-addBook">
 
 
-        <div class="content insetContent" id="conAddBook">
+        <div class="content insetContent d_n" id="conAddBook">
 
             <form id="fmAddbook">
 
@@ -429,7 +429,7 @@ function abc(dCurDateTime){
 abc(new Date(),20);
 
 // 页面切换完成, 加载餐别
-function getBusinessHours(){
+function loadData(){
     // 获取餐别
     $.ajax({
         type:'get'
@@ -516,7 +516,7 @@ function getBusinessHours(){
                 }
             });
 
-            app.showPage('wrapperAddbook');
+            app.showPage('wrapper-addBook');
             /*var myScroll;
              if(!myScroll){
              function loaded() {

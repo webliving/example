@@ -28,9 +28,9 @@
     </script>
     <!--列表模板 end -->
 
-    <div class="wrapper wrapperBottom0" id="wrapperResList">
+    <div class="wrapper wrapperBottom0" id="wrapper-resList">
 
-        <div id="conResList" class="content insetContent">
+        <div id="conResList" class="content insetContent d_n">
 
         </div>
     </div>
@@ -40,6 +40,7 @@
     // 餐厅列表模板
     tempResList=_.template( $('#tempResList').html());
 
+function loadData(){
     $.ajax({
         type:'get'
         ,url:'http://192.168.1.10/cloud/API/GetBranchesByGroupId?groupId=3'
@@ -63,7 +64,7 @@
             $('#conResList').empty().append(jQResList);
             $('a',jQResList).on('click',function(){
                 var sBranchid=$(this).attr('baranchid'),
-                    sBranchName=$('p',this).text();
+                        sBranchName=$('p',this).text();
 
                 // 门店 id 持久化
                 app.branchId=sBranchid;
@@ -102,14 +103,13 @@
             }
 
             console.log('获取列表成功');
-
+            app.showPage('wrapper-resList');
             // 获取列表成功其它操作...
-
-
 
         }
         ,error:function(err){
             console.log('注册失败');
         }
     });
+}
 </script>

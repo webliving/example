@@ -10,7 +10,7 @@ var app = app || {};
 	app.Todo = Backbone.Model.extend({
         // Default attributes for the list
         // and ensure that each todo created has `title` and `completed` keys.
-        urlRoot:'http://192.168.1.104:3001/book'
+        urlRoot:'http://192.168.1.7:3001/book'
         ,idAttribute:'_id'
         ,defaults: {
             completed: false

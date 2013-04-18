@@ -12,7 +12,7 @@ app.jqTodoList=$('#todo-list');
 
 		// Reference to this collection's model.
 		model: app.Todo,
-        url:'http://192.168.1.104:3001/book',
+        url:'http://192.168.1.7:3001/book',
 		// Save all of the todos items under the `"todos"` namespace.
 //		localStorage: new Store('todos-backbone'),
 

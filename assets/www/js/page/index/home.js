@@ -40,13 +40,13 @@ var app ={
     ,waitPage:function(sWrapperId,jQData){
         var jQwaitPage=$('<div class="waitPage" id="waitPage"><div><i class="icon-coffee"></i><p>客官请稍等, 正在加载中...</p></div></div>');
 
-        $('#'+sWrapperId,jQData).append(jQwaitPage);
+        $('#'+sWrapperId).append(jQwaitPage);
 
     }
     // 转场切换后,功能加载完成,显示页面
     ,showPage:function(sWrapperId){
         $('#'+sWrapperId+' .waitPage').hide();
-        $('#'+sWrapperId+' .content').show();
+        $('#'+sWrapperId+' .content').fadeIn('fast');
 
     }
     ,showLoad:function(sMsg,sIcoClass){
@@ -302,14 +302,14 @@ var Workspace = Backbone.Router.extend({
     routes:{
         "findPage":"findPage",    // http://localhost:3001/backbone/#help
         // 个人中心
-        "profile":"profile",
+//        "profile":"profile",
         // 注册
         "reg":"reg",
         // 更换餐厅
-        "resList":"resList",
+//        "resList":"resList",
 
         // 预订
-        "addbook":"addbook",
+//        "addbook":"addbook",
         // 获取空闲桌台
         "idleTableList":"idleTableList",
         // 预订确认
@@ -330,10 +330,38 @@ var Workspace = Backbone.Router.extend({
         ,"search":"search",
         "/:id": "getCertificate",
         "search/:query":"search"  // http://localhost:3001/backbone/#search/p7
-//        ,'*filter': 'setFilter'
+        ,'*filter': 'setFilter'
 
-    }
-    ,findPage:function(a,b){
+    },
+    loadPage:function(sHash){
+        $.ajax({
+            type:'get'
+            ,url:sHash+'.html'
+            ,dataType:'html'
+            ,crossDomain: true
+            ,success:function(data){
+//                var jQdata=$(data);
+
+                $('body').append(data);
+                app.waitPage('wrapper-'+sHash);
+//
+//                console.log('sHash',sHash);
+
+                css3TransitionHandler2('slide',false,$('#'+sHash),app.pageActive,loadData);
+
+            }
+            ,error:function(err){
+                console.log('加载出错,返回重试');
+            }
+        });
+    },
+    setFilter:function(a){
+        this.loadPage(a);
+    },
+    /*search:function(a,b){
+        console.log(a,b); // p7 undefined
+    },*/
+    findPage:function(a,b){
 
         /*if(!myScroll){
 
@@ -360,33 +388,7 @@ var Workspace = Backbone.Router.extend({
 
 
     }
-    // 预订
-    ,addbook:function(){
 
-        $.ajax({
-            type:'get'
-            ,url:'addbook.html'
-            ,dataType:'html'
-            ,crossDomain: true
-            ,success:function(data){
-                var jQdata=$(data);
-
-                app.waitPage('wrapperAddbook',jQdata);
-                $('body').append(jQdata);
-
-                // 获取数据
-//                app.getResList();
-
-                css3TransitionHandler2('slide',false,$('#addbook'),app.pageActive,getBusinessHours);
-
-            }
-            ,error:function(err){
-                console.log('预订加载出错');
-            }
-        });
-
-
-    }
     // 获取空闲桌台
     ,idleTableList:function(){
         $.ajax({
@@ -551,55 +553,11 @@ var Workspace = Backbone.Router.extend({
 
 
     }
-    ,
-    // 个人中心
-    profile:function(){
-
-        $.ajax({
-            type:'get'
-            ,url:'profile.html'
-            ,dataType:'html'
-            ,crossDomain: true
-//        ,jsonp:callbackFunction
-//        ,jsonpCallback: 'callbackFunction'
-//            ,data:sRegData
-            ,success:function(data){
-
-                $('body').append(data);
-                // 获取数据
-//                app.getResList();
-
-                /*if(!myScroll){
-
-                    var myScroll;
-                    function loaded() {
-
-                        myScroll = new iScroll('wrapperProfile',{
-                            hideScrollbar:true
-//                    ,bounceLock:true
-//                    ,useTransition:true
-//                    fadeScrollbar:true
-                        });
-                    }
-
-                    setTimeout(loaded, 0);
-                }else{
-                    myScroll.refresh();
-                }*/
 
 
-                css3TransitionHandler2('slide',false,$('#profile'),app.pageActive,addEventProfile);
-
-            }
-            ,error:function(err){
-                console.log('拉取个人中心失败');
-            }
-        });
-
-    }
 
     // 餐厅列表
-    ,resList:function(){
+   /* ,resList:function(){
 
         $.ajax({
             type:'get'
@@ -618,7 +576,7 @@ var Workspace = Backbone.Router.extend({
             }
         });
 
-    }
+    }*/
 
 });
 
